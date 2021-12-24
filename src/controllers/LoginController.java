@@ -12,7 +12,9 @@ import javax.swing.JTextField;
 
 import connector.Connector;
 import models.Employee;
+import models.ProductAdmin;
 import views.LoginView;
+import views.ProductAdminView;
 
 
 public class LoginController {
@@ -53,7 +55,9 @@ public class LoginController {
 				String positionName = "";
 				
 				String query = String.format("SELECT * FROM employee WHERE username = '%s' AND password = '%s'", username, password);
+				
 				ResultSet res = statement.executeQuery(query);
+	
 				
 				while(res.next()) {
 					positionID = res.getInt("positionID");
@@ -65,13 +69,15 @@ public class LoginController {
 				while(res1.next()) {
 					positionName = res1.getString("name");
 				}
-				if(positionName != null && !positionName.equals("")) {
+				if(employee != null) {
 					if(employee.getStatus().equals("Active")) {
 						if(positionName.equals("Barista")) {
 							
 							
-						}else if(positionName.equals("Product Admin")) {
-							
+						}else if(positionName.equals("ProductAdmin")) {
+							ProductAdmin pa = new ProductAdmin(employee.getPositionID(), employee.getPositionName(), employee.getEmployeeID(), employee.getName(), employee.getStatus(), employee.getSalary(), employee.getUsername(), employee.getPassword());
+							frame.setVisible(false);
+							new ProductAdminView(pa);
 							
 						}else if(positionName.equals("Manager")) {
 							
