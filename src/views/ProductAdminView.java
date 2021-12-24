@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import connector.Connector;
@@ -33,14 +35,45 @@ public class ProductAdminView {
 	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout;
 	
 	private JTable table;
-	private DefaultTableModel model_table;
+	private DefaultTableModel modelTable;
 	
 	public ProductAdminView(ProductAdmin pa) {
 		this.pa = pa;
 		framePlay();
 		setPanel();
-		setTableModel();
-		refreshData();
+		
+		//Set Table Model
+		modelTable = new DefaultTableModel(new String[] {
+				"productID",
+				"name",
+				"description",
+				"price",
+				"stock"
+			}, 0);
+			table.setModel(modelTable);
+				
+		//Refresh
+		modelTable.setRowCount(0);
+		Connection con = Connector.connect();
+		try {
+			Statement stat = con.createStatement();
+			String query = String.format("SELECT * FROM product");
+			
+			ResultSet res = stat.executeQuery(query);
+			
+			while(res.next()) {
+				modelTable.addRow(new Object[] {
+						res.getInt("ProductID"),
+						res.getString("name"),
+						res.getString("description"),
+						res.getInt("price"),
+						res.getInt("stock")
+				});
+			}
+			
+		}catch(SQLException e1) {
+			e1.printStackTrace();
+		}
 	}
 	
 	private void framePlay() {
@@ -53,7 +86,7 @@ public class ProductAdminView {
 	private void setPanel() {
 		// Content Panel
 		JPanel content = new JPanel();
-		content.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		content.setBorder(new LineBorder(Color.WHITE, 4));
 		content.setLayout(new BorderLayout());
 		
 		// Title Panel
@@ -130,7 +163,7 @@ public class ProductAdminView {
 		content.add(bottomPanel, BorderLayout.SOUTH);
 		frame.setContentPane(content);
 		
-		ProductController controller = new ProductController(frame, tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc, btnSearch, btnInsert, btnUpdate, btnDelete, table, model_table, pa, btnLogout);
+		ProductController controller = new ProductController(frame, tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc, btnSearch, btnInsert, btnUpdate, btnDelete, table, modelTable, pa, btnLogout);
 		btnSearch.addActionListener(new ActionListener() {
 			
 			@Override
@@ -139,6 +172,7 @@ public class ProductAdminView {
 				
 			}
 		});
+		
 
 		btnInsert.addActionListener(new ActionListener() {
 			
@@ -172,38 +206,6 @@ public class ProductAdminView {
 		});
 	}
 	
-	private void setTableModel() {
-		model_table = new DefaultTableModel(new String[] {
-			"ID",
-			"Product Name",
-			"Product Description",
-			"Product Price",
-			"Product Stocks"
-		}, 0);
-		table.setModel(model_table);
-	}
 	
-	private void refreshData() {
-		model_table.setRowCount(0);
-		Connection con = Connector.connect();
-		try {
-			Statement stat = con.createStatement();
-			String query = String.format("SELECT * FROM Product");
-			
-			ResultSet res = stat.executeQuery(query);
-			
-			while(res.next()) {
-				model_table.addRow(new Object[] {
-						res.getInt("ProductID"),
-						res.getString("ProductName"),
-						res.getString("ProductDescription"),
-						res.getInt("ProductPrice"),
-						res.getInt("ProductStock")
-				});
-			}
-			
-		}catch(SQLException e1) {
-			e1.printStackTrace();
-		}
-	}
+	
 }
