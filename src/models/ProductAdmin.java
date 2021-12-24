@@ -50,5 +50,23 @@ public class ProductAdmin extends Employee{
 		return false;
 	}
 	
+	public boolean updateProduct(Product product) {
+		Connection con = Connector.connect();
+		try {
+			Statement stat = con.createStatement();
+			String query = String.format("UPDATE Product SET name = '%s', description = '%s', price = %d, stock = %d WHERE productID = %d", product.getProductName(), product.getProductDescription(), product.getProductPrice(), product.getProductStock(), product.getProductID());
+			if(stat.executeUpdate(query) == 0) {
+				return false;
+			}
+			else {
+				return true;
+			}
+		}catch(SQLException e1) {
+			e1.printStackTrace();
+		}
+		return false;
+	}
+	
+	
 	
 }

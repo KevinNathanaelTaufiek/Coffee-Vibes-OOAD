@@ -119,48 +119,4 @@ public class LoginView{
 			}
 		});
 	}
-
-	
-	public void a() {
-		mainPanel = new JPanel(new BorderLayout());
-		mainPanel.setBorder(new LineBorder(Color.WHITE, 4));
-		
-		
-		
-		// Set Top Panel
-		titlePanel = new JPanel();
-		jlTitle = new JLabel("Login");
-		jlTitle.setFont(new Font("Times New Roman", Font.PLAIN, 32));
-		titlePanel.setLocation(new Point(500, 300));
-		frame.add(titlePanel);
-		
-		frame.setSize(new Dimension(400, 200));
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
-		
-		formPanel = new JPanel();
-		jlUsername = new JLabel("Username");
-		jlUsername.setBounds(100, 8, 70, 20);
-		formPanel.add(jlUsername);
-		
-		tfUsername = new JTextField();
-		tfUsername.setBounds(100, 27, 193, 28);
-		formPanel.add(tfUsername);
-		
-		jlPassword= new JLabel("Password");
-		jlPassword.setBounds(100, 55, 70, 20);
-		formPanel.add(jlPassword);
-		
-		tfPassword = new JPasswordField();
-		tfPassword.setBounds(100, 75, 193, 28);
-		formPanel.add(tfPassword);
-		
-		btnLogin = new JButton("Login");
-		btnLogin.setBounds(100, 110, 90, 25);
-		btnLogin.setForeground(Color.WHITE);
-		btnLogin.setBackground(Color.BLACK);
-		btnPanel.add(btnLogin);
-	}
-	
-
 }
