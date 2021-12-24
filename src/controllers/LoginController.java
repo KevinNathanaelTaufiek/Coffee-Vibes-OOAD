@@ -10,8 +10,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
-
-import Connector.Connector;
+import connector.Connector;
 import models.Employee;
 import views.LoginView;
 

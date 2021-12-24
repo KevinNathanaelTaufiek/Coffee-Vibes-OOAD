@@ -1,6 +1,5 @@
 package models;
 
-import Connector.Connector;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -8,6 +7,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Random;
 import java.util.Vector;
+
+import connector.Connector;
 
 public class Voucher {
     private Integer voucherID;
