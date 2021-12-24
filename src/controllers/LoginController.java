@@ -53,7 +53,7 @@ public class LoginController {
 				String password = tfPassword.getText();
 				String positionName = "";
 				
-				String query = String.format("select * from employee WHERE username = '%s' AND password = '%s'", username, password);
+				String query = String.format("SELECT * FROM employee WHERE username = '%s' AND password = '%s'", username, password);
 				ResultSet res = statement.executeQuery(query);
 				
 				while(res.next()) {
@@ -66,25 +66,30 @@ public class LoginController {
 				while(res1.next()) {
 					positionName = res1.getString("name");
 				}
-				
-				if(employee.getStatus().equals("Active")) {
-					if(positionName.equals("Barista")) {
-						
-						
-					}else if(positionName.equals("Product Admin")) {
-						
-						
-					}else if(positionName.equals("Manager")) {
-						
-						
-					}else if(positionName.equals("HRD")) {
-						
+				if(positionName != null && !positionName.equals("")) {
+					if(employee.getStatus().equals("Active")) {
+						if(positionName.equals("Barista")) {
+							
+							
+						}else if(positionName.equals("Product Admin")) {
+							
+							
+						}else if(positionName.equals("Manager")) {
+							
+							
+						}else if(positionName.equals("HRD")) {
+							
+						}else {
+							JOptionPane.showMessageDialog(frame, "Wrong Email or Password!", "Failed Login", JOptionPane.ERROR_MESSAGE);
+						}						
 					}else {
-						JOptionPane.showMessageDialog(frame, "Wrong Email or Password!", "Failed Login", JOptionPane.ERROR_MESSAGE);
-					}						
+						JOptionPane.showMessageDialog(frame, "Your current status account is not Active!", "Failed Login", JOptionPane.ERROR_MESSAGE);
+					}
 				}else {
-					JOptionPane.showMessageDialog(frame, "Your current status account is not Active!", "Failed Login", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(frame, "Wrong Email or Password!", "Failed Login", JOptionPane.ERROR_MESSAGE);
 				}
+				
+				
 				
 			} catch (SQLException e) {
 				e.printStackTrace();
