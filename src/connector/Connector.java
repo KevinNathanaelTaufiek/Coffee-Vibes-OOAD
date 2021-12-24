@@ -15,10 +15,10 @@ public class Connector {
 		if(connection == null) {
 			MysqlDataSource source = new MysqlDataSource();
 			source.setServerName("localhost");
+//			source.setURL("jdbc:mysql://localhost:3308/coffeevibes");
 			source.setUser("root");
 			source.setPassword("");
 			source.setDatabaseName("coffeevibes");
-			
 			try {
 				return source.getConnection();
 			}catch(SQLException e) {

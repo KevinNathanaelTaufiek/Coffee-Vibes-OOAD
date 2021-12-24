@@ -1,12 +1,10 @@
 package models;
 
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.Random;
 import java.util.Vector;
+import java.util.concurrent.ThreadLocalRandom;
 
 import connector.Connector;
 
@@ -15,8 +13,8 @@ public class Voucher {
     private Integer discount;
     private String status;
     private String table="voucher";
-    private Connection con= Connector.connect();
 
+    public Voucher(){}
     public Voucher(Integer voucherID, Integer discount, String status) {
         this.voucherID = voucherID;
         this.discount = discount;
@@ -42,10 +40,16 @@ public class Voucher {
     }
 
     public Voucher generateVoucher(Integer discount){
-        Random random=new Random();
-        int voucher=random.nextInt(999999);
+        boolean cek=false;
+        ThreadLocalRandom rand = ThreadLocalRandom.current();
+        int voucher=0;
+        while (!cek){
+            voucher=rand.nextInt(100000,999999);
+            if(getVoucher(voucher)==null)cek=true;
+        }
         String query="Insert Into "+this.table+" Values(?,?,?)";
         try {
+            Connection con= Connector.connect();
             PreparedStatement ps=con.prepareStatement(query);
             ps.setInt(1,voucher);
             ps.setInt(2,discount);
@@ -60,7 +64,7 @@ public class Voucher {
         String query="Select * from "+this.table;
         Vector<Voucher> vouchers=new Vector<>();
         try {
-            ResultSet rs=con.createStatement().executeQuery(query);
+            ResultSet rs=Connector.connect().createStatement().executeQuery(query);
             while(rs.next()){
                 Voucher voucher= map(rs);
                 vouchers.add(voucher);
@@ -74,7 +78,8 @@ public class Voucher {
     public Voucher getVoucher(Integer voucherID){
         String query="Select * from "+this.table+" Where voucherID= "+voucherID;
         try {
-            ResultSet rs=con.createStatement().executeQuery(query);
+            ResultSet rs=Connector.connect().createStatement().executeQuery(query);
+            if(rs.next()==false) return null;
             return map(rs);
         } catch (SQLException e) {
             e.printStackTrace();
@@ -84,7 +89,7 @@ public class Voucher {
     public boolean deleteVoucher(Integer voucherID){
         String query="Delete from "+this.table+" Where voucherID= ?";
         try {
-            PreparedStatement ps= con.prepareStatement(query);
+            PreparedStatement ps= Connector.connect().prepareStatement(query);
             ps.setInt(1,voucherID);
             return ps.executeUpdate()==1;
         } catch (SQLException e) {

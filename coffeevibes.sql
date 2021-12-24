@@ -201,7 +201,7 @@ ALTER TABLE `transaction`
 -- AUTO_INCREMENT for table `voucher`
 --
 ALTER TABLE `voucher`
-  MODIFY `voucherID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `voucherID` int(11) NOT NULL;
 
 --
 -- Constraints for dumped tables
