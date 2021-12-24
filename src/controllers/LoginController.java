@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 
-import connector.Connector;
+import Connector.Connector;
 import models.Employee;
 import views.LoginView;
 

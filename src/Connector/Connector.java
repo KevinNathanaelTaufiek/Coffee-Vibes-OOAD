@@ -1,13 +1,15 @@
-package connector;
+package Connector;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 
 import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
 
 public class Connector {
 
 	private static Connection connection;
+	public ResultSet rs;
+	public Statement st;
+	public ResultSetMetaData rsm;
 	
 	public static Connection connect() {
 		if(connection == null) {
@@ -24,6 +26,25 @@ public class Connector {
 			}
 		}
 		return connection;
+	}
+	public ResultSet executeQuery(String query){
+		rs=null;
+		try {
+			rs=st.executeQuery(query);
+			rsm=rs.getMetaData();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return rs;
+	}
+	public PreparedStatement preparedStatement(String query){
+		PreparedStatement ps=null;
+		try{
+			ps=connection.prepareStatement(query);
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return ps;
 	}
 
 }
