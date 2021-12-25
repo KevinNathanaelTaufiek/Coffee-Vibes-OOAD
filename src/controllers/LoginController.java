@@ -1,22 +1,7 @@
 package controllers;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-
-import connector.Connector;
-import models.Employee;
-import models.ProductAdmin;
 import models.User;
 import views.LoginView;
-import views.ProductAdminView;
-
 
 public class LoginController {
 
