@@ -6,9 +6,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -110,12 +108,21 @@ public class LoginView{
 		
 		frame.add(mainPanel);
 		
-		LoginController controller = new LoginController(tfUsername, tfPassword, btnLogin, frame);
+		LoginController controller = new LoginController();
 		btnLogin.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.validate();
+				boolean flag = controller.getInstance().validate(tfUsername.getText(), tfPassword.getText());
+				if(flag == true) {
+					frame.setVisible(false);
+					
+				}else {
+					if(!LoginController.getInstance().getErrorMessage().equals("")) {
+						JOptionPane.showMessageDialog(frame, LoginController.getInstance().getErrorMessage(), "Login Message", JOptionPane.INFORMATION_MESSAGE);
+					}
+					
+				}
 			}
 		});
 	}

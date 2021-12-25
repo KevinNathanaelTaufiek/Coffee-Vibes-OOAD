@@ -51,11 +51,11 @@ public class ProductController {
 	
 	private void setTableModel() {
 		model_table = new DefaultTableModel(new String[] {
-			"ID",
-			"Product Name",
-			"Product Description",
-			"Product Price",
-			"Product Stocks"
+			"productId",
+			"name",
+			"description",
+			"price",
+			"stock"
 		}, 0);
 		table.setModel(model_table);
 	}

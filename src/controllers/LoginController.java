@@ -13,93 +13,52 @@ import javax.swing.JTextField;
 import connector.Connector;
 import models.Employee;
 import models.ProductAdmin;
+import models.User;
 import views.LoginView;
 import views.ProductAdminView;
 
 
 public class LoginController {
 
-	private JTextField tfUsername, tfPassword;
-	private JButton btnLogin;
-	private JFrame frame;
-	private Connection con;
-	private Employee employee;
+	private User user;
+	public static LoginController controller = null;
+	private String errorMessage;
 	
-	public LoginController(JTextField tfUsername, JTextField tfPassword, JButton btnLogin, JFrame frame) {
-		super();
-		this.tfUsername = tfUsername;
-		this.tfPassword = tfPassword;
-		this.btnLogin = btnLogin;
-		this.frame = frame;
+	public LoginController() {
+		user = new User();
+		errorMessage = "";
+	}
+	
+	
+	public String getErrorMessage() {
+		return errorMessage;
 	}
 	
 	public static void LoginView() {
 		new LoginView();
 	}
 	
-	public void validate() {
-		con = Connector.connect();
-		
-		if(tfUsername.getText().equals("") && tfPassword.getText().equals("")) {
-			 JOptionPane.showMessageDialog(frame, "Username and Password cannot be null!", "Login Message", JOptionPane.INFORMATION_MESSAGE);
-		}else if(tfUsername.getText().equals("")) {
-			JOptionPane.showMessageDialog(frame, "Username cannot be null!", "Login Message", JOptionPane.INFORMATION_MESSAGE);
-		}else if(tfPassword.getText().equals("")) {
-			JOptionPane.showMessageDialog(frame, "Password cannot be null!", "Login Message", JOptionPane.INFORMATION_MESSAGE);
-		}else {
-			try {
-				Statement statement =  con.createStatement();
-				int positionID =0;
-				String username = tfUsername.getText(); 
-				String password = tfPassword.getText();
-				String positionName = "";
-				
-				String query = String.format("SELECT * FROM employee WHERE username = '%s' AND password = '%s'", username, password);
-				
-				ResultSet res = statement.executeQuery(query);
-	
-				
-				while(res.next()) {
-					positionID = res.getInt("positionID");
-					employee = new Employee(positionID, positionName, res.getInt("employeeID"), res.getString("name"), res.getString("status"), res.getInt("salary"), res.getString("username"), res.getString("password"));
-				}
-				
-				String queryEmp = String.format("SELECT * FROM position WHERE positionID = %d", positionID);
-				ResultSet res1 = statement.executeQuery(queryEmp);
-				while(res1.next()) {
-					positionName = res1.getString("name");
-				}
-				if(employee != null) {
-					if(employee.getStatus().equals("Active")) {
-						if(positionName.equals("Barista")) {
-							
-							
-						}else if(positionName.equals("ProductAdmin")) {
-							ProductAdmin pa = new ProductAdmin(employee.getPositionID(), employee.getPositionName(), employee.getEmployeeID(), employee.getName(), employee.getStatus(), employee.getSalary(), employee.getUsername(), employee.getPassword());
-							frame.setVisible(false);
-							new ProductAdminView(pa);
-							
-						}else if(positionName.equals("Manager")) {
-							
-							
-						}else if(positionName.equals("HRD")) {
-							
-						}else {
-							JOptionPane.showMessageDialog(frame, "Wrong Email or Password!", "Failed Login", JOptionPane.ERROR_MESSAGE);
-						}						
-					}else {
-						JOptionPane.showMessageDialog(frame, "Your current status account is not Active!", "Failed Login", JOptionPane.ERROR_MESSAGE);
-					}
-				}else {
-					JOptionPane.showMessageDialog(frame, "Wrong Email or Password!", "Failed Login", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
+	public static LoginController getInstance() {
+		if(controller == null) {
+			controller = new LoginController();
 		}
+		return controller;
+	}
+	
+	public boolean validate(String username, String password) {
+		if(username.equals("") && password.equals("")) {
+			errorMessage = "Username and Password cannot be null!";
+			return false;
+		}else if(username.equals("")) {
+			errorMessage = "Username cannot be null!";
+			return false;
+		}else if(password.equals("")) {
+			errorMessage = "Password cannot be null!";
+			return false;
+		}else {
+			errorMessage = user.checkLogin(username, password);
+		}
+		return false;
 	}
 
 }

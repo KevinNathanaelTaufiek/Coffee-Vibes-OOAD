@@ -1,5 +1,6 @@
 package models;
 
+
 public class Employee extends Position{
 
 	private int employeeID;
@@ -8,6 +9,7 @@ public class Employee extends Position{
 	private int salary;
 	private String username;
 	private String password;
+	
 	
 	public Employee(int positionID, String positionName, int employeeID, String name, String status, int salary,
 			String username, String password) {
@@ -68,6 +70,7 @@ public class Employee extends Position{
 		this.password = password;
 	}
 	
+
 
 
 }

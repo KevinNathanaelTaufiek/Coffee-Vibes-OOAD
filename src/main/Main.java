@@ -1,7 +1,7 @@
 package main;
 
 import controllers.LoginController;
-import views.VoucherView;
+//import views.VoucherView;
 
 public class Main {
 
