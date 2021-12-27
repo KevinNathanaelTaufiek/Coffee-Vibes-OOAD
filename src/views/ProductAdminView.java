@@ -10,10 +10,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -23,11 +23,13 @@ import javax.swing.table.DefaultTableModel;
 
 import connector.Connector;
 import controllers.ProductController;
+import models.Product;
 import models.ProductAdmin;
 
 
 
 public class ProductAdminView {
+	private Connection con = Connector.connect();
 	private JFrame frame = new JFrame("Product Management");
 	private ProductAdmin pa;
 	private JLabel jlName, jlProductID, jlProductName, jlProductPrice, jlProductStock, jlProductDesc;
@@ -63,7 +65,7 @@ public class ProductAdminView {
 			
 			while(res.next()) {
 				modelTable.addRow(new Object[] {
-						res.getInt("ProductID"),
+						res.getInt("productID"),
 						res.getString("name"),
 						res.getString("description"),
 						res.getInt("price"),
@@ -82,6 +84,18 @@ public class ProductAdminView {
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 	}
+	
+	private void setTableModel() {
+		modelTable = new DefaultTableModel(new String[] {
+			"productId",
+			"name",
+			"description",
+			"price",
+			"stock"
+		}, 0);
+		table.setModel(modelTable);
+	}
+	
 	
 	private void setPanel() {
 		// Content Panel
@@ -163,13 +177,45 @@ public class ProductAdminView {
 		content.add(bottomPanel, BorderLayout.SOUTH);
 		frame.setContentPane(content);
 		
-		ProductController controller = new ProductController(frame, tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc, btnSearch, btnInsert, btnUpdate, btnDelete, table, modelTable, pa, btnLogout);
+		ProductController controller = new ProductController();
 		btnSearch.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.btnSearch(e);
-				
+				if(tfSearch.getText().equals("")) {
+					setTableModel();
+					controller.getInstance().refreshData(modelTable);
+					tfSearch.setText("");
+					tfProductID.setText("");
+					tfProductName.setText("");
+					tfProductDesc.setText("");
+					tfProductPrice.setText("");
+					tfProductStock.setText("");
+				}else {
+					try {
+						modelTable.setRowCount(0);
+						Statement stat = con.createStatement();
+						String query = controller.searching(tfSearch.getText());
+						ResultSet res = stat.executeQuery(query);
+						
+						while(res.next()) {
+							modelTable.addRow(new Object[] {
+									res.getInt("productID"),
+									res.getString("name"),
+									res.getString("description"),
+									res.getInt("price"),
+									res.getInt("stock")
+							});
+							tfProductID.setText(String.valueOf(res.getInt("productID")));
+							tfProductName.setText(res.getString("name"));
+							tfProductDesc.setText(res.getString("description"));
+							tfProductPrice.setText(String.valueOf(res.getInt("price")));
+							tfProductStock.setText(String.valueOf(res.getInt("stock")));
+						}				
+					}catch(SQLException e1) {
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		
@@ -178,7 +224,29 @@ public class ProductAdminView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.btnInsert(e);
+				String name = tfProductName.getText();
+				String description = tfProductDesc.getText();
+				int  price = Integer.valueOf(tfProductPrice.getText());
+				int stock = Integer.valueOf(tfProductStock.getText());
+				
+				setTableModel();
+				
+				boolean insert = controller.insertProduct(new Product(0,name, description, price, stock));
+				
+				if(insert) {
+					tfSearch.setText("");
+					tfProductID.setText("");
+					tfProductName.setText("");
+					tfProductDesc.setText("");
+					tfProductPrice.setText("");
+					tfProductStock.setText("");
+					controller.refreshData(modelTable);
+					
+					JOptionPane.showMessageDialog(frame, "Success Insert New Product");
+					
+				}else {
+					JOptionPane.showMessageDialog(frame, "Failed Insert New Product");
+				}
 			}
 		});
 		
@@ -186,7 +254,29 @@ public class ProductAdminView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.btnUpdate(e);
+				String name = tfProductName.getText();
+				String description = tfProductDesc.getText();
+				int price = Integer.valueOf(tfProductPrice.getText());
+				int stock = Integer.valueOf(tfProductStock.getText());
+				int productID = Integer.valueOf(tfProductID.getText());
+				
+				setTableModel();
+				boolean update = controller.updateProduct(new Product(productID, name, description, price, stock));
+				if(update) {
+					controller.refreshData(modelTable);
+					
+					tfSearch.setText("");
+					tfProductID.setText("");
+					tfProductName.setText("");
+					tfProductDesc.setText("");
+					tfProductPrice.setText("");
+					tfProductStock.setText("");
+					JOptionPane.showMessageDialog(frame, "Success Update Product");
+					
+				}else {
+					JOptionPane.showMessageDialog(frame, "Failed Update Product");
+
+				}
 			}
 		});
 		
@@ -194,18 +284,36 @@ public class ProductAdminView {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.btnDelete(e);
+				setTableModel();
+				int productID = Integer.valueOf(tfProductID.getText());
+				
+				boolean delete = controller.deleteProduct(productID);
+				if(delete) {
+					controller.refreshData(modelTable);
+					tfSearch.setText("");
+					tfProductID.setText("");
+					tfProductName.setText("");
+					tfProductDesc.setText("");
+					tfProductPrice.setText("");
+					tfProductStock.setText("");
+					JOptionPane.showMessageDialog(frame, "Success Delete Product");
+				}else {
+					JOptionPane.showMessageDialog(frame, "Failed Delete Product");
+				}
 			}
 		});
+		
 		btnLogout.addActionListener(new ActionListener() {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				controller.btnLogout(e);
+				if(e.getSource() == btnLogout) {
+					new LoginView();
+					frame.setVisible(false);
+				}
 			}
 		});
 	}
-	
 	
 	
 }

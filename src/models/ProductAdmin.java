@@ -10,13 +10,13 @@ import connector.Connector;
 
 public class ProductAdmin extends Employee{
 
+	private Connection con = Connector.connect();
 	public ProductAdmin(int positionID, String positionName, int employeeID, String name, String status, int salary,
 			String username, String password) {
 		super(positionID, positionName, employeeID, name, status, salary, username, password);
 	}
 
 	public boolean insertProduct(Product product) {
-		Connection con = Connector.connect();
 		try {
 			Statement stat = con.createStatement();
 			String query = String.format("INSERT INTO Product(name, description, price, stock) VALUES('%s', '%s', %d, %d)", product.getProductName() ,product.getProductDescription(), product.getProductPrice(), product.getProductStock());
@@ -33,11 +33,10 @@ public class ProductAdmin extends Employee{
 		return false;
 	}
 	
-	public boolean deleteProduct(int ProductID) {
-		Connection con = Connector.connect();
+	public boolean deleteProduct(int productID) {
 		try {
 			Statement stat = con.createStatement();
-			String query = String.format("DELETE FROM Product WHERE productID = %d", ProductID);
+			String query = String.format("DELETE FROM Product WHERE productID = %d", productID);
 			if(stat.executeUpdate(query) == 0) {
 				return false;
 			}
@@ -51,7 +50,6 @@ public class ProductAdmin extends Employee{
 	}
 	
 	public boolean updateProduct(Product product) {
-		Connection con = Connector.connect();
 		try {
 			Statement stat = con.createStatement();
 			String query = String.format("UPDATE Product SET name = '%s', description = '%s', price = %d, stock = %d WHERE productID = %d", product.getProductName(), product.getProductDescription(), product.getProductPrice(), product.getProductStock(), product.getProductID());
@@ -67,6 +65,13 @@ public class ProductAdmin extends Employee{
 		return false;
 	}
 	
+	
+	public String searching(String search) {
+		String query = String.format("SELECT * FROM Product WHERE ProductID = %d", Integer.valueOf(search));
+		return query;
+	}
+	
+
 	
 	
 }
