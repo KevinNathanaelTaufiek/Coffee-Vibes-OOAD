@@ -5,8 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
-import javax.swing.JTable;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 import connector.Connector;
@@ -38,9 +37,6 @@ public class ProductController {
 	}
 	
 	
-
-	
-	
 	public void refreshData(DefaultTableModel model_table) {
 		model_table.setRowCount(0);
 		Connection con = Connector.connect();
@@ -70,7 +66,6 @@ public class ProductController {
 
 	}
 	
-	
 	public boolean insertProduct(Product product) {
 		return pa.insertProduct(product);
 	}
@@ -81,6 +76,31 @@ public class ProductController {
 	
 	public boolean deleteProduct(int productID) {
 		return pa.deleteProduct(productID);
+	}
+	
+	public boolean validate(String name, String description, int price, int stock, String priceStr, String stockStr) {
+		
+		if(name.isEmpty() || name.equals("")) {
+			errorMessage = "Product name cannot be empty!";
+			return false;
+		}else if (description.isEmpty() || description.equals("")) {
+			errorMessage = "Product description cannot be empty!";
+			return false;
+		}else if(priceStr.isEmpty()) {
+			errorMessage = "Product price cannot be empty!";
+			return false;
+		}else if(price < 1){
+			errorMessage = "Product price cannot be less than one!";
+			return false;
+		}else if(stockStr.isEmpty()) {
+			errorMessage = "Product stock cannot be empty!";
+			return false;
+		}else if(stock < 1){
+			errorMessage = "Product stock cannot be less than one!";
+			return false;
+		}else {
+			return true;
+		}
 	}
 
 }

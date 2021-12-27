@@ -22,6 +22,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import connector.Connector;
+import controllers.LoginController;
 import controllers.ProductController;
 import models.Product;
 import models.ProductAdmin;
@@ -226,27 +227,49 @@ public class ProductAdminView {
 			public void actionPerformed(ActionEvent e) {
 				String name = tfProductName.getText();
 				String description = tfProductDesc.getText();
-				int  price = Integer.valueOf(tfProductPrice.getText());
-				int stock = Integer.valueOf(tfProductStock.getText());
+				int price = 0;
+				int stock = 0;
+				String priceStr = tfProductPrice.getText();
+				String stockStr = tfProductStock.getText();
+				int flag =0;
 				
-				setTableModel();
-				
-				boolean insert = controller.insertProduct(new Product(0,name, description, price, stock));
-				
-				if(insert) {
-					tfSearch.setText("");
-					tfProductID.setText("");
-					tfProductName.setText("");
-					tfProductDesc.setText("");
-					tfProductPrice.setText("");
-					tfProductStock.setText("");
-					controller.refreshData(modelTable);
-					
-					JOptionPane.showMessageDialog(frame, "Success Insert New Product");
-					
-				}else {
-					JOptionPane.showMessageDialog(frame, "Failed Insert New Product");
+				if(!priceStr.isEmpty()) {
+					try {
+						price = Integer.valueOf(tfProductPrice.getText());
+					} catch (Exception e1) {
+						flag = 1;
+						JOptionPane.showMessageDialog(frame, "Product price must be numeric!", "Product Message", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}else if(!stockStr.isEmpty()) {
+					try {
+						 stock = Integer.valueOf(tfProductStock.getText());
+					} catch (Exception e1) {
+						flag = 1;
+						JOptionPane.showMessageDialog(frame, "Product stock must be numeric!", "Product Message", JOptionPane.INFORMATION_MESSAGE);
+					}
 				}
+			
+				setTableModel();
+				boolean validate = controller.getInstance().validate(name,description,price,stock, priceStr, stockStr);
+				JOptionPane.showMessageDialog(frame, ProductController.getInstance().getErrorMessage(), "Product Message", JOptionPane.INFORMATION_MESSAGE);
+				if(validate && flag != 1) {
+					boolean insert = controller.insertProduct(new Product(0,name, description, price, stock));
+					if(insert) {
+						tfSearch.setText("");
+						tfProductID.setText("");
+						tfProductName.setText("");
+						tfProductDesc.setText("");
+						tfProductPrice.setText("");
+						tfProductStock.setText("");
+						controller.refreshData(modelTable);
+						JOptionPane.showMessageDialog(frame, "Success Insert New Product");
+						
+					}else {
+						JOptionPane.showMessageDialog(frame, "Failed Insert New Product");
+					}
+				}
+				
+				controller.refreshData(modelTable);
 			}
 		});
 		
@@ -259,24 +282,69 @@ public class ProductAdminView {
 				int price = Integer.valueOf(tfProductPrice.getText());
 				int stock = Integer.valueOf(tfProductStock.getText());
 				int productID = Integer.valueOf(tfProductID.getText());
+				String priceStr = tfProductPrice.getText();
+				String stockStr = tfProductStock.getText();
+				int flag =0;
+				
+				if(!tfProductID.getText().isEmpty()) {
+					try {
+						productID = Integer.valueOf(tfProductID.getText());
+					} catch (Exception e1) {
+						flag = 1;
+						JOptionPane.showMessageDialog(frame, "Product ID must be numeric!", "Product Message", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}else if(!priceStr.isEmpty()) {
+					try {
+						price = Integer.valueOf(tfProductPrice.getText());
+					} catch (Exception e1) {
+						flag = 1;
+						JOptionPane.showMessageDialog(frame, "Product price must be numeric!", "Product Message", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}else if(!stockStr.isEmpty()) {
+					try {
+						 stock = Integer.valueOf(tfProductStock.getText());
+					} catch (Exception e1) {
+						flag = 1;
+						JOptionPane.showMessageDialog(frame, "Product stock must be numeric!", "Product Message", JOptionPane.INFORMATION_MESSAGE);
+					}
+				}
 				
 				setTableModel();
-				boolean update = controller.updateProduct(new Product(productID, name, description, price, stock));
-				if(update) {
-					controller.refreshData(modelTable);
-					
-					tfSearch.setText("");
-					tfProductID.setText("");
-					tfProductName.setText("");
-					tfProductDesc.setText("");
-					tfProductPrice.setText("");
-					tfProductStock.setText("");
-					JOptionPane.showMessageDialog(frame, "Success Update Product");
-					
-				}else {
-					JOptionPane.showMessageDialog(frame, "Failed Update Product");
+//				boolean update = controller.updateProduct(new Product(productID, name, description, price, stock));
+//				if(update) {
+//					controller.refreshData(modelTable);
+//					tfSearch.setText("");
+//					tfProductID.setText("");
+//					tfProductName.setText("");
+//					tfProductDesc.setText("");
+//					tfProductPrice.setText("");
+//					tfProductStock.setText("");
+//					JOptionPane.showMessageDialog(frame, "Success Update Product");
+//					
+//				}else {
+//					JOptionPane.showMessageDialog(frame, "Failed Update Product");
+//
+//				}
+				boolean validate = controller.getInstance().validate(name,description,price,stock, priceStr, stockStr);
+				if(validate && flag != 1) {
+					boolean update = controller.updateProduct(new Product(productID, name, description, price, stock));
+					if(update) {
+						controller.refreshData(modelTable);
+						
+						tfSearch.setText("");
+						tfProductID.setText("");
+						tfProductName.setText("");
+						tfProductDesc.setText("");
+						tfProductPrice.setText("");
+						tfProductStock.setText("");
+						JOptionPane.showMessageDialog(frame, "Success Update Product");
+						
+					}else {
+						JOptionPane.showMessageDialog(frame, "Failed Update Product");
 
+					}
 				}
+				controller.refreshData(modelTable);
 			}
 		});
 		
@@ -300,6 +368,7 @@ public class ProductAdminView {
 				}else {
 					JOptionPane.showMessageDialog(frame, "Failed Delete Product");
 				}
+				controller.refreshData(modelTable);
 			}
 		});
 		
