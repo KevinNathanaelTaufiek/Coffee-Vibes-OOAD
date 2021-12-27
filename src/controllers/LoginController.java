@@ -1,16 +1,16 @@
 package controllers;
 
-import models.User;
+import models.Employee;
 import views.LoginView;
 
 public class LoginController {
 
-	private User user;
+	private Employee employee;
 	public static LoginController controller = null;
 	private String errorMessage;
 	
 	public LoginController() {
-		user = new User();
+		employee = new Employee(0,"",0,"","",0,"","");
 		errorMessage = "";
 	}
 	
@@ -41,7 +41,7 @@ public class LoginController {
 			errorMessage = "Password cannot be null!";
 			return false;
 		}else {
-			errorMessage = user.checkLogin(username, password);
+			errorMessage = employee.checkLogin(username, password);
 		}
 		return false;
 	}
