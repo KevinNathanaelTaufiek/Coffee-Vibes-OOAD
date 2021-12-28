@@ -1,15 +1,23 @@
 package controllers;
 
 import models.Voucher;
+import views.VoucherView;
 
 import java.util.Vector;
 
 public class VoucherController {
     private Voucher voucher;
     public static VoucherController voucherController=null;
+    
+    
     public VoucherController() {
         voucher = new Voucher();
     }
+    
+    public static void VoucherView() {
+		new VoucherView(); 
+	}
+    
     public static VoucherController getInstance() {
         if(voucherController == null) {
             voucherController = new VoucherController();

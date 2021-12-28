@@ -11,9 +11,9 @@ import connector.Connector;
 public class ProductAdmin extends Employee{
 
 	private Connection con = Connector.connect();
-	public ProductAdmin(int positionID, String positionName, int employeeID, String name, String status, int salary,
+	public ProductAdmin(int positionID, int employeeID, String name, String status, int salary,
 			String username, String password) {
-		super(positionID, positionName, employeeID, name, status, salary, username, password);
+		super(positionID,  employeeID, name, status, salary, username, password);
 	}
 
 	public boolean insertProduct(Product product) {

@@ -10,7 +10,7 @@ public class LoginController {
 	private String errorMessage;
 	
 	public LoginController() {
-		employee = new Employee(0,"",0,"","",0,"","");
+		employee = new Employee();
 		errorMessage = "";
 	}
 	
@@ -31,6 +31,7 @@ public class LoginController {
 	}
 	
 	public boolean validate(String username, String password) {
+		String temp = employee.checkLogin(username, password);
 		if(username.equals("") && password.equals("")) {
 			errorMessage = "Username and Password cannot be null!";
 			return false;
@@ -40,10 +41,12 @@ public class LoginController {
 		}else if(password.equals("")) {
 			errorMessage = "Password cannot be null!";
 			return false;
+		}else if(!temp.equals("")) {
+			errorMessage = temp;
+			return false;
 		}else {
-			errorMessage = employee.checkLogin(username, password);
+			return true;
 		}
-		return false;
 	}
 
 }

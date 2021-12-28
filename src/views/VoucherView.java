@@ -19,10 +19,12 @@ public class VoucherView {
     private JTextField voucherIdField;
     private JLabel voucherIdLabel;
     private JButton generateButton,deleteButton;
+    
     public VoucherView() {
         setPanel();
         setFrame();
     }
+    
     private void setPanel() {
         mainPanel=new JPanel(new BorderLayout());
 
@@ -93,7 +95,6 @@ public class VoucherView {
         frame.setSize(400, 600);
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
     }
 

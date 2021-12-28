@@ -3,11 +3,13 @@ package models;
 public class Position {
 	private int positionID;
 	private String positionName;
+	
 	public Position(int positionID, String positionName) {
 		super();
 		this.positionID = positionID;
 		this.positionName = positionName;
 	}
+	
 	public int getPositionID() {
 		return positionID;
 	}
@@ -20,6 +22,5 @@ public class Position {
 	public void setPositionName(String positionName) {
 		this.positionName = positionName;
 	}
-	
 	
 }

@@ -24,6 +24,7 @@ import javax.swing.table.DefaultTableModel;
 import connector.Connector;
 import controllers.LoginController;
 import controllers.ProductController;
+import controllers.VoucherController;
 import models.Product;
 import models.ProductAdmin;
 
@@ -35,7 +36,7 @@ public class ProductAdminView {
 	private ProductAdmin pa;
 	private JLabel jlName, jlProductID, jlProductName, jlProductPrice, jlProductStock, jlProductDesc;
 	private JTextField tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc;
-	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout;
+	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout ,btnVoucher;
 	
 	private JTable table;
 	private DefaultTableModel modelTable;
@@ -57,7 +58,6 @@ public class ProductAdminView {
 				
 		//Refresh
 		modelTable.setRowCount(0);
-		Connection con = Connector.connect();
 		try {
 			Statement stat = con.createStatement();
 			String query = String.format("SELECT * FROM product");
@@ -108,12 +108,18 @@ public class ProductAdminView {
 		JPanel titlePanel = new JPanel();
 		titlePanel.setLayout(new GridLayout(2, 2));
 		jlName = new JLabel("Username: " + pa.getUsername());
+		
+		JPanel navbarPanel = new JPanel();
 		btnLogout = new JButton("Log Out");
+		btnVoucher = new JButton("Voucher");
+		navbarPanel.setLayout(new GridLayout(1,2));
+		navbarPanel.add(btnVoucher);
+		navbarPanel.add(btnLogout);
 		
 		tfSearch = new JTextField();
 		btnSearch = new JButton("Search By ID");
 		titlePanel.add(jlName);
-		titlePanel.add(btnLogout);
+		titlePanel.add(navbarPanel);
 		titlePanel.add(tfSearch);
 		titlePanel.add(btnSearch);
 		content.add(titlePanel, BorderLayout.NORTH);
@@ -220,6 +226,13 @@ public class ProductAdminView {
 			}
 		});
 		
+		btnVoucher.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				VoucherController.VoucherView();
+			}
+		});
 
 		btnInsert.addActionListener(new ActionListener() {
 			

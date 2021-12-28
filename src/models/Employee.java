@@ -8,7 +8,7 @@ import java.sql.Statement;
 import connector.Connector;
 import views.ProductAdminView;
 
-public class Employee extends Position{
+public class Employee{
 
 	private Connection con = Connector.connect();
 	private int employeeID;
@@ -17,17 +17,22 @@ public class Employee extends Position{
 	private int salary;
 	private String username;
 	private String password;
+	private int positionID;
 	private Employee employee;
 	
 	
-	public Employee(int positionID, String positionName, int employeeID, String name, String status, int salary,
+	public Employee() {
+		
+	}
+	
+	public Employee(int positionID, int employeeID, String name, String status, int salary,
 			String username, String password) {
-		super(positionID, positionName);
 		this.employeeID = employeeID;
 		this.name = name;
 		this.status = status;
 		this.salary = salary;
 		this.username = username;
+		this.positionID = positionID;
 		this.password = password;
 	}
 
@@ -79,7 +84,16 @@ public class Employee extends Position{
 		this.password = password;
 	}
 	
+
 	
+	public int getPositionID() {
+		return positionID;
+	}
+
+	public void setPositionID(int positionID) {
+		this.positionID = positionID;
+	}
+
 	public String checkLogin(String username, String password) {
 		con = Connector.connect();
 		String error="";
@@ -94,7 +108,7 @@ public class Employee extends Position{
 			
 			while(res.next()) {
 				positionID = res.getInt("positionID");
-				employee = new Employee(positionID, positionName, res.getInt("employeeID"), res.getString("name"), res.getString("status"), res.getInt("salary"), res.getString("username"), res.getString("password"));
+				employee = new Employee(positionID, res.getInt("employeeID"), res.getString("name"), res.getString("status"), res.getInt("salary"), res.getString("username"), res.getString("password"));
 			}
 			
 			String queryEmp = String.format("SELECT * FROM position WHERE positionID = %d", positionID);
@@ -108,7 +122,7 @@ public class Employee extends Position{
 						
 					}else if(positionName.equals("ProductAdmin")) {
 						
-						ProductAdmin pa = new ProductAdmin(employee.getPositionID(), employee.getPositionName(), employee.getEmployeeID(), employee.getName(), employee.getStatus(), employee.getSalary(), employee.getUsername(), employee.getPassword());
+						ProductAdmin pa = new ProductAdmin(employee.getPositionID(),employee.getEmployeeID(), employee.getName(), employee.getStatus(), employee.getSalary(), employee.getUsername(), employee.getPassword());
 						new ProductAdminView(pa);
 						
 					}else if(positionName.equals("Manager")) {

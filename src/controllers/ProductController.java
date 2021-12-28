@@ -21,7 +21,7 @@ public class ProductController {
 	private ProductAdmin pa;
 	
 	public ProductController() {
-		pa = new ProductAdmin(0,"",0,"","",0,"","");
+		pa = new ProductAdmin(0,0,"","",0,"","");
 		errorMessage = "";
 	}
 	
