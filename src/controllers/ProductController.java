@@ -16,7 +16,7 @@ import models.ProductAdmin;
 public class ProductController {
 
 	
-	public static ProductController controller = null;
+	private static ProductController controller = null;
 	private String errorMessage;
 	private ProductAdmin pa;
 	
@@ -35,6 +35,8 @@ public class ProductController {
 		}
 		return controller;
 	}
+	
+	
 	
 	
 	public void refreshData(DefaultTableModel model_table) {
@@ -78,6 +80,10 @@ public class ProductController {
 		return pa.deleteProduct(productID);
 	}
 	
+	public ResultSet getAllProducts() {
+		return pa.getAllProducts();
+	}
+	
 	public boolean validate(String name, String description, int price, int stock, String priceStr, String stockStr) {
 		
 		if(name.isEmpty() || name.equals("")) {
@@ -89,16 +95,34 @@ public class ProductController {
 		}else if(priceStr.isEmpty()) {
 			errorMessage = "Product price cannot be empty!";
 			return false;
-		}else if(price < 1){
-			errorMessage = "Product price cannot be less than one!";
-			return false;
 		}else if(stockStr.isEmpty()) {
 			errorMessage = "Product stock cannot be empty!";
 			return false;
-		}else if(stock < 1){
-			errorMessage = "Product stock cannot be less than one!";
-			return false;
 		}else {
+			if(!priceStr.isEmpty()) { 
+				try {
+					price = Integer.parseInt(priceStr);
+				} catch (Exception e1) {
+					errorMessage = "Product price must be numeric!";
+					return false;
+				}
+				
+				if(price < 1){ 
+					errorMessage = "Product price cannot be less than one!";
+					return false;
+				}
+			}if(!stockStr.isEmpty()) {
+				try {
+					 stock = Integer.parseInt(stockStr);
+				} catch (Exception e1) {
+					errorMessage = "Product stock must be numeric!";
+					return false;
+				}
+				 if(stock < 1){
+					errorMessage = "Product stock cannot be less than one!";
+					return false;
+				}
+			}
 			return true;
 		}
 	}
