@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2021 at 03:55 PM
+-- Generation Time: Dec 28, 2021 at 06:00 PM
 -- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
+-- PHP Version: 8.0.10
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -49,6 +49,16 @@ CREATE TABLE `employee` (
   `password` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `employee`
+--
+
+INSERT INTO `employee` (`employeeID`, `positionID`, `name`, `status`, `salary`, `username`, `password`) VALUES
+(2, 1, 'barista', 'Active', 1000, 'barista', 'asdasd'),
+(3, 2, 'product admin', 'Active', 1212, 'productadmin', 'asdasd'),
+(4, 3, 'manager', 'Active', 9999, 'manager', 'asdasd'),
+(5, 4, 'hrd', 'Active', 777, 'hrd', 'asdasd');
+
 -- --------------------------------------------------------
 
 --
@@ -59,6 +69,16 @@ CREATE TABLE `position` (
   `positionID` int(11) NOT NULL,
   `name` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `position`
+--
+
+INSERT INTO `position` (`positionID`, `name`) VALUES
+(1, 'Barista'),
+(2, 'ProductAdmin'),
+(3, 'Manager'),
+(4, 'HRD');
 
 -- --------------------------------------------------------
 
@@ -154,8 +174,9 @@ ALTER TABLE `transaction`
 -- Indexes for table `transactionitem`
 --
 ALTER TABLE `transactionitem`
-  ADD PRIMARY KEY (`transactionID`,`productID`),
-  ADD KEY `transactionID` (`transactionID`,`productID`);
+  ADD PRIMARY KEY (`productID`,`transactionID`) USING BTREE,
+  ADD KEY `ProductId` (`productID`) USING BTREE,
+  ADD KEY `transactionID` (`transactionID`) USING BTREE;
 
 --
 -- Indexes for table `voucher`
@@ -177,13 +198,13 @@ ALTER TABLE `cartitem`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employeeID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `employeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `position`
 --
 ALTER TABLE `position`
-  MODIFY `positionID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `positionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `product`
@@ -196,12 +217,6 @@ ALTER TABLE `product`
 --
 ALTER TABLE `transaction`
   MODIFY `transactionID` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `voucher`
---
-ALTER TABLE `voucher`
-  MODIFY `voucherID` int(11) NOT NULL;
 
 --
 -- Constraints for dumped tables
@@ -218,6 +233,12 @@ ALTER TABLE `cartitem`
 --
 ALTER TABLE `employee`
   ADD CONSTRAINT `positionID` FOREIGN KEY (`positionID`) REFERENCES `position` (`positionID`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`productID`) REFERENCES `transactionitem` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `transaction`
