@@ -50,18 +50,31 @@ public class VoucherView {
         deleteButton=new JButton("Delete Voucher");
         generateButton.addActionListener(e -> {
             String discount = JOptionPane.showInputDialog("Input Discount");
-            if(Integer.parseInt(discount)<1||Integer.parseInt(discount)>100){
+            
+            int disc = -1;
+            try {
+            	disc = Integer.parseInt(discount);
+    		} catch (Exception e1) {
+    			JOptionPane.showMessageDialog(null, "Must be numeric" ,"Error",JOptionPane.YES_OPTION);
+    		}
+            
+            if(discount.equals("") || discount == null) {
+            	JOptionPane.showMessageDialog(null, "Cannot be empty" ,"Error",JOptionPane.YES_OPTION);
+                return;
+            }else if((disc<1||disc>100) && disc!= -1){
                 JOptionPane.showMessageDialog(null, "Discount between 1-100" ,"Error",JOptionPane.YES_OPTION);
                 return;
             }else{
-                VoucherController voucherController= VoucherController.getInstance();
-                Voucher voucher=voucherController.insertVoucher(discount);
-                if(voucher==null){
-                    JOptionPane.showMessageDialog(null, "Error" ,"Error",JOptionPane.YES_OPTION);
-                }else{
-                    JOptionPane.showMessageDialog(null, "Voucher generate with Voucher ID : " +voucher.getVoucherID(),"Success",JOptionPane.INFORMATION_MESSAGE);
-                    getData();
-                }
+            	if(disc!=1) {
+            		 VoucherController voucherController= VoucherController.getInstance();
+                     Voucher voucher=voucherController.insertVoucher(discount);
+                     if(voucher==null){
+                         JOptionPane.showMessageDialog(null, "Error" ,"Error",JOptionPane.YES_OPTION);
+                     }else{
+                         JOptionPane.showMessageDialog(null, "Voucher generate with Voucher ID : " +voucher.getVoucherID(),"Success",JOptionPane.INFORMATION_MESSAGE);
+                         getData();
+                     }
+            	}
             }
         });
         deleteButton.addActionListener(e -> {

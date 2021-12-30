@@ -37,7 +37,7 @@ public class ProductManagementForm {
 	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout ,btnVoucher;
 	
 	private JTable table;
-	
+	private DefaultTableModel modelTable;
 	public ProductManagementForm(Employee emp) {
 		this.emp = emp;
 		init();
@@ -116,7 +116,13 @@ public class ProductManagementForm {
 		
 		// Scroll Panel ( Tabel )
 		JScrollPane jspanel = new JScrollPane();
-		table = new JTable();
+//		table = new JTable();
+		table=new JTable(modelTable){
+            public boolean editCellAt(int row, int column, java.util.EventObject e) {
+                return false;
+            }
+		};
+		
 		jspanel.setViewportView(table);
 		content.add(jspanel, BorderLayout.CENTER);
 		
@@ -210,7 +216,7 @@ public class ProductManagementForm {
 							"price",
 							"stock"
 					};
-					DefaultTableModel modelTable;
+					
 					modelTable = new DefaultTableModel(header, 0);
 
 					String productID = tfSearch.getText();

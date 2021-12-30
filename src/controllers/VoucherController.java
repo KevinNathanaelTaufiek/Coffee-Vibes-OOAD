@@ -35,7 +35,13 @@ public class VoucherController {
         if(discount.equalsIgnoreCase("")||discount==null){
             return null;
         }
-        return voucher.generateVoucher(Integer.parseInt(discount));
+        int disc = -1;
+        try {
+        	disc = Integer.parseInt(discount);
+		} catch (Exception e) {
+			return null;
+		}
+        return voucher.generateVoucher(disc);
     }
     public boolean deleteVoucher(String voucherID){
         if(voucherID.equalsIgnoreCase("")||voucherID==null){
