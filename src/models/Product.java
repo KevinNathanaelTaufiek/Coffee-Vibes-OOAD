@@ -28,7 +28,6 @@ public class Product {
 			int stock = rs.getInt("stock");
 			return new Product(id, name, description, price, stock);
 		} catch (SQLException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}

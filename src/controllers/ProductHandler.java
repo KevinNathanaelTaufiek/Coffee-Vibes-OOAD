@@ -75,6 +75,10 @@ public class ProductHandler {
 				errorMessage = "Product Price must be numeric";
 				return false;
 			}
+			if(priceint < 1) {
+				errorMessage = "Product Price cannot be less than one";
+				return false;
+			}
 			
 			try {
 				stockint = Integer.parseInt(stock);				
@@ -138,6 +142,10 @@ public class ProductHandler {
 				priceint = Integer.parseInt(price);				
 			} catch (Exception e) {
 				errorMessage = "Product Price must be numeric";
+				return false;
+			}
+			if(priceint < 1) {
+				errorMessage = "Product Price cannot be less than one";
 				return false;
 			}
 			

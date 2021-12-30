@@ -12,6 +12,7 @@ public class Voucher {
     private Integer voucherID;
     private Integer discount;
     private String status;
+	private Connector con= Connector.connect();
     private String table="voucher";
 
     public Voucher(){}
@@ -49,8 +50,7 @@ public class Voucher {
         }
         String query="Insert Into "+this.table+" Values(?,?,?)";
         try {
-            Connection con= Connector.connect();
-            PreparedStatement ps=con.prepareStatement(query);
+            PreparedStatement ps= con.preparedStatement(query);
             ps.setInt(1,voucher);
             ps.setInt(2,discount);
             ps.setString(3,"Valid");
@@ -64,7 +64,7 @@ public class Voucher {
         String query="Select * from "+this.table;
         Vector<Voucher> vouchers=new Vector<>();
         try {
-            ResultSet rs=Connector.connect().createStatement().executeQuery(query);
+            ResultSet rs= con.executeQuery(query);
             while(rs.next()){
                 Voucher voucher= map(rs);
                 vouchers.add(voucher);
@@ -78,7 +78,7 @@ public class Voucher {
     public Voucher getVoucher(Integer voucherID){
         String query="Select * from "+this.table+" Where voucherID= "+voucherID;
         try {
-            ResultSet rs=Connector.connect().createStatement().executeQuery(query);
+            ResultSet rs=Connector.connect().executeQuery(query);
             if(rs.next()==false) return null;
             return map(rs);
         } catch (SQLException e) {
@@ -89,7 +89,7 @@ public class Voucher {
     public boolean deleteVoucher(Integer voucherID){
         String query="Delete from "+this.table+" Where voucherID= ?";
         try {
-            PreparedStatement ps= Connector.connect().prepareStatement(query);
+            PreparedStatement ps= Connector.connect().preparedStatement(query);
             ps.setInt(1,voucherID);
             return ps.executeUpdate()==1;
         } catch (SQLException e) {

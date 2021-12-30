@@ -4,6 +4,7 @@ import controllers.VoucherController;
 import models.Voucher;
 
 import javax.swing.*;
+import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -27,6 +28,7 @@ public class VoucherView {
     
     private void setPanel() {
         mainPanel=new JPanel(new BorderLayout());
+        mainPanel.setBorder(new LineBorder(Color.WHITE,4));
 
         voucherTable=new JTable(dtm){
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
@@ -96,6 +98,7 @@ public class VoucherView {
         frame.setResizable(true);
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
+        frame.setTitle("Manage Voucher");
     }
 
 }

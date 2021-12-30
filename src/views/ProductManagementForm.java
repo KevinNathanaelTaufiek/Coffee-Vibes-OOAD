@@ -5,6 +5,8 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.Vector;
 
 import javax.swing.JButton;
@@ -172,6 +174,27 @@ public class ProductManagementForm {
 		content.add(bottomPanel, BorderLayout.SOUTH);
 		frame.setContentPane(content);
 		
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				getData();
+			}
+			private void getData() {
+			  int row = table.getSelectedRow();
+			  int id = (int) table.getValueAt(row, 0);
+			  String name = (String) table.getValueAt(row, 1);
+			  String desc = (String) table.getValueAt(row, 2);
+			  int price = (int) table.getValueAt(row, 3);
+			  int stock = (int) table.getValueAt(row, 4);
+			  
+			  tfProductID.setText(id + "");
+			  tfProductName.setText(name + "");
+			  tfProductDesc.setText(desc + "");
+			  tfProductPrice.setText(price + "");
+			  tfProductStock.setText(stock + "");
+			}
+		});
+		
 		ProductHandler controller = ProductHandler.getInstance();
 		btnSearch.addActionListener(new ActionListener() {
 			
@@ -180,30 +203,30 @@ public class ProductManagementForm {
 				if(tfSearch.getText().equals("")) {
 					loadData();
 				}else {
-					// search product?
-//					try {
-//						modelTable.setRowCount(0);
-//						Statement stat = con.createStatement();
-//						String query = controller.searching(tfSearch.getText());
-//						ResultSet res = stat.executeQuery(query);
-//						
-//						while(res.next()) {
-//							modelTable.addRow(new Object[] {
-//									res.getInt("productID"),
-//									res.getString("name"),
-//									res.getString("description"),
-//									res.getInt("price"),
-//									res.getInt("stock")
-//							});
-//							tfProductID.setText(String.valueOf(res.getInt("productID")));
-//							tfProductName.setText(res.getString("name"));
-//							tfProductDesc.setText(res.getString("description"));
-//							tfProductPrice.setText(String.valueOf(res.getInt("price")));
-//							tfProductStock.setText(String.valueOf(res.getInt("stock")));
-//						}				
-//					}catch(SQLException e1) {
-//						e1.printStackTrace();
-//					}
+					//Search
+					String header[] = {
+							"productID", "name",
+							"description",
+							"price",
+							"stock"
+					};
+					DefaultTableModel modelTable;
+					modelTable = new DefaultTableModel(header, 0);
+
+					String productID = tfSearch.getText();
+					Product product = ProductHandler.getInstance().getProduct(productID);
+					
+					if(product!=null) {
+						Vector<Object> row = new Vector<>();
+						row.add(product.getProductID());
+						row.add(product.getName());
+						row.add(product.getDescription());
+						row.add(product.getPrice());
+						row.add(product.getStock());
+						modelTable.addRow(row);
+					}
+					
+					table.setModel(modelTable);
 				}
 			}
 		});
@@ -292,6 +315,8 @@ public class ProductManagementForm {
 			}
 		});
 	}
+	
+	
 	
 	
 }
