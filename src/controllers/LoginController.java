@@ -9,7 +9,7 @@ public class LoginController {
 	public static LoginController controller = null;
 	private String errorMessage;
 	
-	public LoginController() {
+	private LoginController() {
 		employee = new Employee();
 		errorMessage = "";
 	}

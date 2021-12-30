@@ -2,31 +2,37 @@ package connector;
 
 import java.sql.*;
 
-import com.mysql.jdbc.jdbc2.optional.MysqlDataSource;
-
 public class Connector {
 
-	private static Connection connection;
+	private Connection connection;
+	private static Connector connector;
+	private Statement st;
 	public ResultSet rs;
-	public Statement st;
 	public ResultSetMetaData rsm;
 	
-	public static Connection connect() {
-		if(connection == null) {
-			MysqlDataSource source = new MysqlDataSource();
-			source.setServerName("localhost");
-//			source.setURL("jdbc:mysql://localhost:3308/coffeevibes");
-			source.setUser("root");
-			source.setPassword("");
-			source.setDatabaseName("coffeevibes");
-			try {
-				return source.getConnection();
-			}catch(SQLException e) {
-				return null;
-			}
-		}
-		return connection;
+	
+	private Connector() {
+		try {  
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/coffeevibes", "root", "");  
+            st = connection.createStatement(); 
+        } catch(Exception e) {
+        	e.printStackTrace();
+        	System.out.println("Failed to connect the database, the system is terminated!");
+        	System.exit(0);
+        }
 	}
+	
+	public static Connector connect() {
+		if(connector == null) {
+			connector = new Connector();
+		}
+		return connector;
+	}
+	
+	
+	
+	// untuk SELECT
 	public ResultSet executeQuery(String query){
 		rs=null;
 		try {
@@ -37,6 +43,16 @@ public class Connector {
 		}
 		return rs;
 	}
+	
+	// untuk INSERT UPDATE DELETE
+	public void executeUpdate(String query) {
+    	try {
+			st.executeUpdate(query);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+    }
+	
 	public PreparedStatement preparedStatement(String query){
 		PreparedStatement ps=null;
 		try{

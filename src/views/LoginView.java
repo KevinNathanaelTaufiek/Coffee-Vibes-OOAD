@@ -108,7 +108,7 @@ public class LoginView{
 		
 		frame.add(mainPanel);
 		
-		LoginController controller = new LoginController();
+		LoginController controller = LoginController.getInstance();
 		btnLogin.addActionListener(new ActionListener() {
 			
 			@Override
@@ -117,7 +117,7 @@ public class LoginView{
 				if(flag == true) {
 					frame.setVisible(false);
 				}else {
-					if(!LoginController.getInstance().getErrorMessage().equals("")) {
+					if(!controller.getErrorMessage().equals("")) {
 						JOptionPane.showMessageDialog(frame, LoginController.getInstance().getErrorMessage(), "Login Message", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
