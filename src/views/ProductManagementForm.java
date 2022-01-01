@@ -2,7 +2,9 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -342,22 +344,29 @@ public class ProductManagementForm {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					String productID = tfProductID.getText();
-					String name = tfProductName.getText();
-					String description = tfProductDesc.getText();
-					String price = tfProductPrice.getText();
-					String stock = tfProductStock.getText();
-					ProductHandler productHandler = controller.getInstance();
+					int confrim = confirmationDialog("update");
 					
-					boolean updated = productHandler.updateProduct(productID,name, description, price, stock);
-					
-					if(updated) {
-						clearTextField();
-						JOptionPane.showMessageDialog(frame, "Success Update Product");
-						loadData();
+					if(confrim == 1) {
+						String productID = tfProductID.getText();
+						String name = tfProductName.getText();
+						String description = tfProductDesc.getText();
+						String price = tfProductPrice.getText();
+						String stock = tfProductStock.getText();
+						ProductHandler productHandler = controller.getInstance();
+						
+						boolean updated = productHandler.updateProduct(productID,name, description, price, stock);
+						
+						if(updated) {
+							clearTextField();
+							JOptionPane.showMessageDialog(frame, "Success Update Product");
+							loadData();
+						}else {
+							JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+						}
 					}else {
-						JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+						JOptionPane.showMessageDialog(frame, "Update Product Canceled!");
 					}
+				
 				}
 			});
 			
@@ -365,17 +374,23 @@ public class ProductManagementForm {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					String productID = tfProductID.getText();
-					ProductHandler productHandler = controller.getInstance();
+					int confrim = confirmationDialog("delete");
 					
-					boolean deleted = productHandler.deleteProduct(productID);
-					
-					if(deleted) {
-						clearTextField();
-						JOptionPane.showMessageDialog(frame, "Success Delete Product");
-						loadData();
+					if(confrim == 1) {
+						String productID = tfProductID.getText();
+						ProductHandler productHandler = controller.getInstance();
+						
+						boolean deleted = productHandler.deleteProduct(productID);
+						
+						if(deleted) {
+							clearTextField();
+							JOptionPane.showMessageDialog(frame, "Success Delete Product");
+							loadData();
+						}else {
+							JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+						}
 					}else {
-						JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+						JOptionPane.showMessageDialog(frame, "Delete Product Canceled!");
 					}
 				}
 			});
@@ -412,6 +427,33 @@ public class ProductManagementForm {
 		});
 	}
 	
+	
+	
+	public int confirmationDialog(String dialog) {
+		JFrame frame = new JFrame("Confirmation Dialog");
+	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	    JPanel panel = new JPanel();
+	    LayoutManager layout = new FlowLayout();  
+	    panel.setLayout(layout);       
+
+	    
+	    final JLabel label = new JLabel();
+	    int result = JOptionPane.showConfirmDialog(frame,"Are you sure you want "+dialog+" this product?", "Confirmation Dialog",
+	               JOptionPane.YES_NO_OPTION,
+	               JOptionPane.QUESTION_MESSAGE);
+	    if(result == JOptionPane.YES_OPTION){
+	    	return 1;
+	    }else if (result == JOptionPane.NO_OPTION){
+	    	return 0;
+	    }
+
+	    panel.add(label);
+	    frame.getContentPane().add(panel, BorderLayout.CENTER);    
+	    frame.setSize(560, 200);      
+	    frame.setLocationRelativeTo(null);  
+	    frame.setVisible(true);
+	    return 0;
+	}
 	
 	
 	
