@@ -124,6 +124,8 @@ public class Employee{
 				if(employee.getStatus().equals("Active")) {
 					if(positionName.equals("Barista")) {
 						
+						new ProductManagementForm(employee);
+						
 					}else if(positionName.equals("ProductAdmin")) {
 						
 						new ProductManagementForm(employee);

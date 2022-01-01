@@ -32,9 +32,9 @@ public class ProductManagementForm {
 	private Connector con = Connector.connect();
 	private JFrame frame = new JFrame("Product Management");
 	private Employee emp;
-	private JLabel jlName, jlProductID, jlProductName, jlProductPrice, jlProductStock, jlProductDesc;
-	private JTextField tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc;
-	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout ,btnVoucher;
+	private JLabel jlName, jlProductID, jlProductName, jlProductPrice, jlProductStock, jlProductDesc, jlProductQuantity;
+	private JTextField tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc, tfProductQuantity;
+	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout ,btnVoucher, btnAddToCart, btnCart;
 	
 	private JTable table;
 	private DefaultTableModel modelTable;
@@ -100,12 +100,21 @@ public class ProductManagementForm {
 		jlName = new JLabel("Username: " + emp.getUsername());
 		
 		JPanel navbarPanel = new JPanel();
-		btnLogout = new JButton("Log Out");
-		btnVoucher = new JButton("Voucher");
 		navbarPanel.setLayout(new GridLayout(1,2));
-		navbarPanel.add(btnVoucher);
+		
+		if(this.emp.getPositionID() == 2) { //productAdmin
+			btnVoucher = new JButton("Voucher");
+			navbarPanel.add(btnVoucher);
+		}else if(this.emp.getPositionID() == 1) { //barista
+			btnCart = new JButton("MyCart");
+			navbarPanel.add(btnCart);
+		}
+		
+		btnLogout = new JButton("Log Out");
 		navbarPanel.add(btnLogout);
 		
+		
+			
 		tfSearch = new JTextField();
 		btnSearch = new JButton("Search By ID");
 		titlePanel.add(jlName);
@@ -126,58 +135,106 @@ public class ProductManagementForm {
 		jspanel.setViewportView(table);
 		content.add(jspanel, BorderLayout.CENTER);
 		
-		// Bottom Panel
-		JPanel bottomPanel = new JPanel();
-		bottomPanel.setLayout(new GridLayout(13, 1));
 		
-		JPanel pan1 = new JPanel();
-		bottomPanel.add(pan1);
 		
-		// ProductID
-		jlProductID = new JLabel("Product ID [ Update | Delete]");
-		tfProductID = new JTextField();
-		bottomPanel.add(jlProductID);
-		bottomPanel.add(tfProductID);
+		if(this.emp.getPositionID() == 2) { //productAdmin
+			
+			// Bottom Panel
+			JPanel bottomPanel = new JPanel();
+			bottomPanel.setLayout(new GridLayout(13, 1));
+			
+			JPanel pan1 = new JPanel();
+			bottomPanel.add(pan1);
+			
+			// ProductID
+			jlProductID = new JLabel("Product ID [ Update | Delete]");
+			tfProductID = new JTextField();
+			bottomPanel.add(jlProductID);
+			bottomPanel.add(tfProductID);
+						
+			// ProductName
+			jlProductName = new JLabel("Product Name");
+			tfProductName = new JTextField();
+			bottomPanel.add(jlProductName);
+			bottomPanel.add(tfProductName);
+						
+			//ProductDesc
+			jlProductDesc= new JLabel("Product Description");
+			tfProductDesc = new JTextField();
+			bottomPanel.add(jlProductDesc);
+			bottomPanel.add(tfProductDesc);
+						
+			// Product Price
+			jlProductPrice= new JLabel("Product Price");
+			tfProductPrice = new JTextField();
+			bottomPanel.add(jlProductPrice);
+			bottomPanel.add(tfProductPrice);
+						
+			// Product Stock
+			jlProductStock= new JLabel("Product Stocks");
+			tfProductStock = new JTextField();
+			bottomPanel.add(jlProductStock);
+			bottomPanel.add(tfProductStock);
+			
+			JPanel pan = new JPanel();
+			bottomPanel.add(pan);
+			
+			// Button Insert Delete Update
+			JPanel btn_panel = new JPanel();
+			btn_panel.setLayout(new GridLayout(1, 3));
+			btnInsert = new JButton("Insert Product");
+			btnUpdate = new JButton("Update Product");
+			btnDelete = new JButton("Delete Product");
+			btn_panel.add(btnInsert);
+			btn_panel.add(btnUpdate);
+			btn_panel.add(btnDelete);
+			
+			bottomPanel.add(btn_panel);
+			content.add(bottomPanel, BorderLayout.SOUTH);
+		}else if(this.emp.getPositionID() == 1) { //barista
+			// Bottom Panel
+			JPanel bottomPanel = new JPanel();
+			bottomPanel.setLayout(new GridLayout(9, 1));
+			
+			JPanel pan1 = new JPanel();
+			bottomPanel.add(pan1);
+			
+			//Information
+			JLabel jlInfo = new JLabel("Product Information",JLabel.CENTER);
+			bottomPanel.add(jlInfo);
+			
+			// ProductName
+			jlProductName = new JLabel("Product Name");
+			bottomPanel.add(jlProductName);
+						
+			//ProductDesc
+			jlProductDesc= new JLabel("Product Description");
+			bottomPanel.add(jlProductDesc);
+						
+			// Product Price
+			jlProductPrice= new JLabel("Product Price");
+			bottomPanel.add(jlProductPrice);
+						
+				
+			// Product Quantity
+			jlProductQuantity= new JLabel("Input Quantity");
+			bottomPanel.add(jlProductQuantity);
+					
+			JPanel pan = new JPanel();
+			bottomPanel.add(pan);
+			
+			// Button Add To Cart
+			JPanel btn_panel = new JPanel();
+			btn_panel.setLayout(new GridLayout(1, 1));
+			btnAddToCart = new JButton("Add To Cart");
+			btn_panel.add(btnAddToCart);
+			
+			bottomPanel.add(btn_panel);
+			content.add(bottomPanel, BorderLayout.SOUTH);
+		}
 		
-		// ProductName
-		jlProductName = new JLabel("Product Name");
-		tfProductName = new JTextField();
-		bottomPanel.add(jlProductName);
-		bottomPanel.add(tfProductName);
 		
-		//ProductDesc
-		jlProductDesc= new JLabel("Product Description");
-		tfProductDesc = new JTextField();
-		bottomPanel.add(jlProductDesc);
-		bottomPanel.add(tfProductDesc);
 		
-		// Product Price
-		jlProductPrice= new JLabel("Product Price");
-		tfProductPrice = new JTextField();
-		bottomPanel.add(jlProductPrice);
-		bottomPanel.add(tfProductPrice);
-		
-		// Product Stock
-		jlProductStock= new JLabel("Product Stocks");
-		tfProductStock = new JTextField();
-		bottomPanel.add(jlProductStock);
-		bottomPanel.add(tfProductStock);
-		
-		JPanel pan = new JPanel();
-		bottomPanel.add(pan);
-		
-		// Button Insert Delete Update
-		JPanel btn_panel = new JPanel();
-		btn_panel.setLayout(new GridLayout(1, 3));
-		btnInsert = new JButton("Insert Product");
-		btnUpdate = new JButton("Update Product");
-		btnDelete = new JButton("Delete Product");
-		btn_panel.add(btnInsert);
-		btn_panel.add(btnUpdate);
-		btn_panel.add(btnDelete);
-		
-		bottomPanel.add(btn_panel);
-		content.add(bottomPanel, BorderLayout.SOUTH);
 		frame.setContentPane(content);
 		
 		table.addMouseListener(new MouseAdapter() {
@@ -186,18 +243,30 @@ public class ProductManagementForm {
 				getData();
 			}
 			private void getData() {
-			  int row = table.getSelectedRow();
-			  int id = (int) table.getValueAt(row, 0);
-			  String name = (String) table.getValueAt(row, 1);
-			  String desc = (String) table.getValueAt(row, 2);
-			  int price = (int) table.getValueAt(row, 3);
-			  int stock = (int) table.getValueAt(row, 4);
-			  
-			  tfProductID.setText(id + "");
-			  tfProductName.setText(name + "");
-			  tfProductDesc.setText(desc + "");
-			  tfProductPrice.setText(price + "");
-			  tfProductStock.setText(stock + "");
+				int row = table.getSelectedRow();
+				if(emp.getPositionID()==2) {//product Admin
+					int id = (int) table.getValueAt(row, 0);
+					String name = (String) table.getValueAt(row, 1);
+					String desc = (String) table.getValueAt(row, 2);
+					int price = (int) table.getValueAt(row, 3);
+					int stock = (int) table.getValueAt(row, 4);
+					
+					tfProductID.setText(id + "");		
+					tfProductName.setText(name + "");
+					tfProductDesc.setText(desc + "");
+					tfProductPrice.setText(price + "");
+					tfProductStock.setText(stock + "");
+					
+				}else if(emp.getPositionID()==1) {//barista
+					String name = (String) table.getValueAt(row, 1);
+					String desc = (String) table.getValueAt(row, 2);
+					int price = (int) table.getValueAt(row, 3);
+					
+					jlProductName.setText("Product Name : "+name);	
+					jlProductDesc.setText("Product Description : "+desc);
+					jlProductPrice.setText("Product Price : "+price);
+				}
+  
 			}
 		});
 		
@@ -237,78 +306,99 @@ public class ProductManagementForm {
 			}
 		});
 		
-		btnVoucher.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				VoucherController.VoucherView();
-			}
-		});
-
-		btnInsert.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String name = tfProductName.getText();
-				String description = tfProductDesc.getText();
-				String price = tfProductPrice.getText();
-				String stock = tfProductStock.getText();
-				ProductHandler productHandler = controller.getInstance();
+		if(this.emp.getPositionID() == 2) {
+			btnVoucher.addActionListener(new ActionListener() {
 				
-				boolean inserted = productHandler.insertProduct(name, description, price, stock);
-				
-				if(inserted) {
-					clearTextField();
-					JOptionPane.showMessageDialog(frame, "Success Insert New Product");
-					loadData();
-				}else {
-					JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					VoucherController.VoucherView();
 				}
+			});
+	
+			btnInsert.addActionListener(new ActionListener() {
 				
-			}
-		});
-		
-		btnUpdate.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String productID = tfProductID.getText();
-				String name = tfProductName.getText();
-				String description = tfProductDesc.getText();
-				String price = tfProductPrice.getText();
-				String stock = tfProductStock.getText();
-				ProductHandler productHandler = controller.getInstance();
-				
-				boolean updated = productHandler.updateProduct(productID,name, description, price, stock);
-				
-				if(updated) {
-					clearTextField();
-					JOptionPane.showMessageDialog(frame, "Success Update Product");
-					loadData();
-				}else {
-					JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String name = tfProductName.getText();
+					String description = tfProductDesc.getText();
+					String price = tfProductPrice.getText();
+					String stock = tfProductStock.getText();
+					ProductHandler productHandler = controller.getInstance();
+					
+					boolean inserted = productHandler.insertProduct(name, description, price, stock);
+					
+					if(inserted) {
+						clearTextField();
+						JOptionPane.showMessageDialog(frame, "Success Insert New Product");
+						loadData();
+					}else {
+						JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+					}
+					
 				}
-			}
-		});
-		
-		btnDelete.addActionListener(new ActionListener() {
+			});
 			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String productID = tfProductID.getText();
-				ProductHandler productHandler = controller.getInstance();
+			btnUpdate.addActionListener(new ActionListener() {
 				
-				boolean deleted = productHandler.deleteProduct(productID);
-				
-				if(deleted) {
-					clearTextField();
-					JOptionPane.showMessageDialog(frame, "Success Delete Product");
-					loadData();
-				}else {
-					JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String productID = tfProductID.getText();
+					String name = tfProductName.getText();
+					String description = tfProductDesc.getText();
+					String price = tfProductPrice.getText();
+					String stock = tfProductStock.getText();
+					ProductHandler productHandler = controller.getInstance();
+					
+					boolean updated = productHandler.updateProduct(productID,name, description, price, stock);
+					
+					if(updated) {
+						clearTextField();
+						JOptionPane.showMessageDialog(frame, "Success Update Product");
+						loadData();
+					}else {
+						JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+					}
 				}
-			}
-		});
+			});
+			
+			btnDelete.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					String productID = tfProductID.getText();
+					ProductHandler productHandler = controller.getInstance();
+					
+					boolean deleted = productHandler.deleteProduct(productID);
+					
+					if(deleted) {
+						clearTextField();
+						JOptionPane.showMessageDialog(frame, "Success Delete Product");
+						loadData();
+					}else {
+						JOptionPane.showMessageDialog(frame, productHandler.getErrorMessage());
+					}
+				}
+			});
+		}else if(this.emp.getPositionID() == 2) {
+			btnAddToCart.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+			
+			
+			btnCart.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					
+				}
+			});
+		}
 		
 		btnLogout.addActionListener(new ActionListener() {
 			
