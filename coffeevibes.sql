@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 30, 2021 at 08:29 AM
+-- Generation Time: Jan 01, 2022 at 07:22 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.10
 
@@ -20,18 +20,6 @@ SET time_zone = "+00:00";
 --
 -- Database: `coffeevibes`
 --
-
--- --------------------------------------------------------
-
---
--- Table structure for table `cartitem`
---
-
-CREATE TABLE `cartitem` (
-  `cartitemID` int(11) NOT NULL,
-  `productID` int(11) NOT NULL,
-  `quantity` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
 
@@ -94,6 +82,14 @@ CREATE TABLE `product` (
   `stock` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Dumping data for table `product`
+--
+
+INSERT INTO `product` (`productID`, `name`, `description`, `price`, `stock`) VALUES
+(6, 'qwe', 'ert', 1, 7),
+(7, 'kaveric', 'pajwdiopajwdpjaowijd adwawdjpaiopwdj', 4, 21);
+
 -- --------------------------------------------------------
 
 --
@@ -133,15 +129,15 @@ CREATE TABLE `voucher` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Indexes for dumped tables
+-- Dumping data for table `voucher`
 --
 
+INSERT INTO `voucher` (`voucherID`, `discount`, `status`) VALUES
+(149327, 5, 'Valid');
+
 --
--- Indexes for table `cartitem`
+-- Indexes for dumped tables
 --
-ALTER TABLE `cartitem`
-  ADD PRIMARY KEY (`cartitemID`),
-  ADD KEY `productID` (`productID`);
 
 --
 -- Indexes for table `employee`
@@ -189,12 +185,6 @@ ALTER TABLE `voucher`
 --
 
 --
--- AUTO_INCREMENT for table `cartitem`
---
-ALTER TABLE `cartitem`
-  MODIFY `cartitemID` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
@@ -210,7 +200,7 @@ ALTER TABLE `position`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `transaction`
@@ -221,12 +211,6 @@ ALTER TABLE `transaction`
 --
 -- Constraints for dumped tables
 --
-
---
--- Constraints for table `cartitem`
---
-ALTER TABLE `cartitem`
-  ADD CONSTRAINT `productID` FOREIGN KEY (`productID`) REFERENCES `product` (`productID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `employee`

@@ -171,26 +171,15 @@ public class ProductHandler {
 		}
 	}
 	
-	public boolean updateProductStock(String productID, int stock) {
-		if(productID.isEmpty()) {
-			errorMessage = "Product ID cannot be empty";
-			return false;
-		}
-		else if(stock < 0) {
+	public boolean updateProductStock(int productID, int stock) {
+		
+		if(stock < 0) {
 			errorMessage = "Product Stock cannot be less than zero";
 			return false;
 		}
 		else {
-			int idint = -1;
 			
-			try {
-				idint = Integer.parseInt(productID);				
-			} catch (Exception e) {
-				errorMessage = "Product Id must be numeric";
-				return false;
-			}
-			
-			product = new Product().getProduct(idint);
+			product = new Product().getProduct(productID);
 			
 			product.setStock(stock);
 			

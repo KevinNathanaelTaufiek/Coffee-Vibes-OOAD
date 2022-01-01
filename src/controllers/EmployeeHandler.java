@@ -18,6 +18,13 @@ public class EmployeeHandler {
 		return errorMessage;
 	}
 	
+	public static EmployeeHandler getInstance() {
+		if(controller == null) {
+			controller = new EmployeeHandler();
+		}
+		return controller;
+	}
+	
 	
 	public boolean fireEmployee(String id) {
 		if(id.isEmpty()) {
