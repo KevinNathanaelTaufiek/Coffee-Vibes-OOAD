@@ -7,6 +7,7 @@ import java.util.Vector;
 import models.CartItem;
 import models.Employee;
 import models.Product;
+import views.CartManagementForm;
 
 public class CartHandler {
 
@@ -28,6 +29,10 @@ public class CartHandler {
 			controller = new CartHandler();
 		}
 		return controller;
+	}
+	
+	public void viewAddProductToCartForm() {
+		new CartManagementForm();
 	}
 	
 	public List<CartItem> getCart() {

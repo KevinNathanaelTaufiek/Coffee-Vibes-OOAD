@@ -23,8 +23,10 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
 
 import connector.Connector;
+import controllers.CartHandler;
 import controllers.ProductHandler;
 import controllers.VoucherController;
+import models.CartItem;
 import models.Employee;
 import models.Product;
 
@@ -220,7 +222,9 @@ public class ProductManagementForm {
 				
 			// Product Quantity
 			jlProductQuantity= new JLabel("Input Quantity");
+			tfProductStock = new JTextField();
 			bottomPanel.add(jlProductQuantity);
+			bottomPanel.add(tfProductStock);
 					
 			JPanel pan = new JPanel();
 			bottomPanel.add(pan);
@@ -394,13 +398,38 @@ public class ProductManagementForm {
 					}
 				}
 			});
-		}else if(this.emp.getPositionID() == 2) {
+		}else if(this.emp.getPositionID() == 1) {
 			btnAddToCart.addActionListener(new ActionListener() {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					
+					int confrim = confirmationDialog("Add");
+					CartHandler cartHandler = CartHandler.getInstance();
+					if(confrim == 1) {
+						int row = table.getSelectedRow();
+						int id = -1;
+						try {
+							id = (int) table.getValueAt(row, 0);
+							
+						} catch (Exception e2) {
+							JOptionPane.showMessageDialog(frame, "Please Select An Item First!");
+							return;
+						}
+						String qty = tfProductStock.getText().toString();
+						
+						CartItem added = CartHandler.getInstance().addToCart(String.valueOf(id), qty);
+						if(added != null) {
+							JOptionPane.showMessageDialog(frame, "Success Add "+ added.getProduct().getName() +" to Cart");
+							loadData();
+						}else {
+							JOptionPane.showMessageDialog(frame, cartHandler.getErrorMessage());
+						}
+					}else {
+						JOptionPane.showMessageDialog(frame, "Add to Cart Canceled!");
+					}
+					jlProductName.setText("Product Name : ");	
+					jlProductDesc.setText("Product Description : ");
+					jlProductPrice.setText("Product Price : ");
 				}
 			});
 			
@@ -409,7 +438,7 @@ public class ProductManagementForm {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
+					CartHandler.getInstance().viewAddProductToCartForm();
 					
 				}
 			});
@@ -431,7 +460,6 @@ public class ProductManagementForm {
 	
 	public int confirmationDialog(String dialog) {
 		JFrame frame = new JFrame("Confirmation Dialog");
-	    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	    JPanel panel = new JPanel();
 	    LayoutManager layout = new FlowLayout();  
 	    panel.setLayout(layout);       
