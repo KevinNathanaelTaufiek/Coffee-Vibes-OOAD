@@ -5,10 +5,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
 import connector.Connector;
+import controllers.PositionHandler;
+import views.HRView;
 import views.ProductManagementForm;
 
 public class Employee{
@@ -42,7 +45,24 @@ public class Employee{
 	
 	public List<Employee> getAllEmployees() {
 		String query = String.format("SELECT * FROM " + this.table);
+		ResultSet rs = con.executeQuery(query);
 		
+		try {
+			Vector<Employee> employees = new Vector<>();
+			while(rs.next()) {
+				Employee employee = map(rs);
+				employees.add(employee);
+			}
+			return employees;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
+	
+	public List<Employee> searchEmployee(String name) {
+		String query = String.format("SELECT * FROM " + this.table + " WHERE name LIKE '%%" + name + "%%'");
 		ResultSet rs = con.executeQuery(query);
 		
 		try {
@@ -61,9 +81,10 @@ public class Employee{
 
 	public Employee getEmployee (int employeeID) {
 		String query = "SELECT * FROM " + this.table 
-				+ " WHERE productID = " + employeeID 
+				+ " WHERE employeeID = " + employeeID 
 				+ " LIMIT 1";
 		ResultSet rs = con.executeQuery(query);
+		
 		try {
 			rs.next();
 			return map(rs);
@@ -74,7 +95,7 @@ public class Employee{
 	}
 	
 	public boolean insertEmployee() {
-		String query = String.format("INSERT INTO %s VALUES (?,?,?,?,?,?)", this.table);
+		String query = String.format("INSERT INTO %s VALUES (NULL,?,?,?,?,?,?)", this.table);
 		PreparedStatement ps = con.preparedStatement(query);
 		
 		try {
@@ -84,6 +105,28 @@ public class Employee{
 			ps.setInt(4, salary);
 			ps.setString(5, username);
 			ps.setString(6, password);
+			return ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
+	
+	public boolean updateEmployee() {
+		String query = String.format("UPDATE %s SET name = ?, positionID = ?, salary = ?, status = ?, username = ?, password = ? WHERE employeeID = ?", this.table);
+
+		PreparedStatement ps = con.preparedStatement(query);
+		
+		try {
+			ps.setString(1, name);
+			ps.setInt(2, positionID);
+			ps.setInt(3, salary);
+			ps.setString(4, status);
+			ps.setString(5, username);
+			ps.setString(6, password);
+			ps.setInt(7, employeeID);
+			
 			return ps.executeUpdate() == 1;
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -107,7 +150,6 @@ public class Employee{
 		return false;
 	}
 	
-	//
 	public String checkLogin(String username, String password) {
 		String error="";
 		String query = String.format("SELECT * FROM employee WHERE username = '%s' AND password = '%s' LIMIT 1", username, password);
@@ -134,6 +176,8 @@ public class Employee{
 						
 					}else if(positionName.equals("HRD")) {
 						
+						new HRView(employee);
+						
 					}else {
 						error= "Wrong Email or Password!";				
 					}						
@@ -150,6 +194,15 @@ public class Employee{
 		return error;
 	}
 	
+	public String getBulletPassword() {
+		String bulletPassword = "";
+		
+		for(int i=0; i<password.length(); i++) {
+			bulletPassword = bulletPassword.concat("•");
+		}
+		
+		return bulletPassword;
+	}
 	
 	public Employee(int employeeID, int positionID, String name, String status, int salary, String username,
 			String password) {
@@ -163,7 +216,16 @@ public class Employee{
 	}
 
 	public Employee() {}
-
+	
+	public String getPositionNameById() {
+		PositionHandler p = new PositionHandler();
+		String posName = "";
+		
+		for(int i=1; i<=p.getAllPositions().size(); i++) {			
+			if(positionID == i)	return p.getInstance().getPosition(String.valueOf(positionID)).getPositionName();
+		}
+		return null;
+	}
 
 	public int getEmployeeID() {
 		return employeeID;
@@ -174,6 +236,10 @@ public class Employee{
 	}
 
 	public int getPositionID() {
+		PositionHandler p = new PositionHandler();
+		String posName = "";
+		if(positionID == 1)	posName = p.getInstance().getPosition(String.valueOf(positionID)).getPositionName();
+		
 		return positionID;
 	}
 
@@ -220,7 +286,4 @@ public class Employee{
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
-	
-	
 }
