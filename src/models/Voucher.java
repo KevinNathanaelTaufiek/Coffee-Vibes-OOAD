@@ -89,7 +89,7 @@ public class Voucher {
     public Integer useVoucher(Integer voucherID,Integer totalPrice){
         String query="Select * from "+this.table+" Where voucherID= "+voucherID +" and status = 'Valid'";
         try {
-            ResultSet rs=Connector.connect().executeQuery(query);s
+            ResultSet rs=Connector.connect().executeQuery(query);
             if(rs.next()==false) return 0;
             return totalPrice-((map(rs).getDiscount()/100)*totalPrice);
         } catch (SQLException e) {
