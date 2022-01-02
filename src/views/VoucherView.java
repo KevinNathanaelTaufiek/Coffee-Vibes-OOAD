@@ -49,45 +49,40 @@ public class VoucherView {
         generateButton=new JButton("Generate Voucher");
         deleteButton=new JButton("Delete Voucher");
         generateButton.addActionListener(e -> {
-            String discount = JOptionPane.showInputDialog("Input Discount");
-            
-            int disc = -1;
-            try {
-            	disc = Integer.parseInt(discount);
-    		} catch (Exception e1) {
-    			JOptionPane.showMessageDialog(null, "Must be numeric" ,"Error",JOptionPane.YES_OPTION);
-    		}
-            
-            if(discount.equals("") || discount == null) {
-            	JOptionPane.showMessageDialog(null, "Cannot be empty" ,"Error",JOptionPane.YES_OPTION);
-                return;
-            }else if((disc<1||disc>100) && disc!= -1){
-                JOptionPane.showMessageDialog(null, "Discount between 1-100" ,"Error",JOptionPane.YES_OPTION);
-                return;
-            }else{
-            	if(disc!=1) {
-            		 VoucherController voucherController= VoucherController.getInstance();
-                     Voucher voucher=voucherController.insertVoucher(discount);
-                     if(voucher==null){
-                         JOptionPane.showMessageDialog(null, "Error" ,"Error",JOptionPane.YES_OPTION);
-                     }else{
-                         JOptionPane.showMessageDialog(null, "Voucher generate with Voucher ID : " +voucher.getVoucherID(),"Success",JOptionPane.INFORMATION_MESSAGE);
-                         getData();
-                     }
-            	}
+            String discount="";
+            discount = JOptionPane.showInputDialog("Input Discount");
+            VoucherController voucherController= VoucherController.getInstance();
+            String msg=voucherController.cekInputGenerate(discount);
+            if(msg.equals("success")){
+                Voucher voucher=voucherController.insertVoucher(discount);
+                if(voucher==null){
+                    JOptionPane.showMessageDialog(null, "Error" ,"Error",JOptionPane.YES_OPTION);
+                }else{
+                    JOptionPane.showMessageDialog(null, "Voucher generate with Voucher ID : " +voucher.getVoucherID(),"Success",JOptionPane.INFORMATION_MESSAGE);
+                    getData();
+                }
+            }else {
+                JOptionPane.showMessageDialog(null, msg ,"Error",JOptionPane.YES_OPTION);
             }
         });
         deleteButton.addActionListener(e -> {
-            String voucherId = JOptionPane.showInputDialog("Input Voucher Id");
+            String voucherId="";
+            voucherId = JOptionPane.showInputDialog("Input Voucher Id");
             VoucherController voucherController=VoucherController.getInstance();
             String id=voucherId;
-            boolean status=voucherController.deleteVoucher(id);
-            if(status){
-                JOptionPane.showMessageDialog(null, "Voucher delete with Voucher ID : " +id,"Success",JOptionPane.INFORMATION_MESSAGE);
-                getData();
-            }else{
-                JOptionPane.showMessageDialog(null, "Id : "+id+" Not Found or Error Delete","Error",JOptionPane.YES_OPTION);
+            String msg=voucherController.cekInputDelete(voucherId);
+            if(msg.equals("success")){
+                boolean status=voucherController.deleteVoucher(id);
+                if(status){
+                    JOptionPane.showMessageDialog(null, "Voucher delete with Voucher ID : " +id,"Success",JOptionPane.INFORMATION_MESSAGE);
+                    getData();
+                }else{
+                    JOptionPane.showMessageDialog(null, "Id : "+id+" Not Found or Error Delete","Error",JOptionPane.YES_OPTION);
+                }
+            }else {
+                JOptionPane.showMessageDialog(null, msg ,"Error",JOptionPane.YES_OPTION);
             }
+
         });
         buttonPanel.add(generateButton);
         buttonPanel.add(deleteButton);

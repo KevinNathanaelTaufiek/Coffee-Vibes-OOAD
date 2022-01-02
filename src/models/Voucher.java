@@ -86,6 +86,17 @@ public class Voucher {
         }
         return null;
     }
+    public Integer useVoucher(Integer voucherID,Integer totalPrice){
+        String query="Select * from "+this.table+" Where voucherID= "+voucherID +" and status = 'Valid'";
+        try {
+            ResultSet rs=Connector.connect().executeQuery(query);s
+            if(rs.next()==false) return 0;
+            return totalPrice-((map(rs).getDiscount()/100)*totalPrice);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
     public boolean deleteVoucher(Integer voucherID){
         String query="Delete from "+this.table+" Where voucherID= ?";
         try {

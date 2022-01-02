@@ -52,4 +52,36 @@ public class VoucherController {
     public Voucher getVoucher(Integer voucherID){
         return voucher.getVoucher(voucherID);
     }
+
+    public String cekInputGenerate(String input){
+        int inputInt=-1;
+
+        if((input != null && ("".equals(input)))||input==null){
+            return "Input can't be empty";
+        }else{
+            try{
+                inputInt=Integer.parseInt(input);
+                if (inputInt<1||inputInt>100){
+                    return "Discount between 1-100";
+                }else{
+                    return "success";
+                }
+            }catch (Exception e) {
+                return "Input Must be Integer";
+            }
+        }
+    }
+    public String cekInputDelete(String input){
+        int inputInt=-1;
+        if((input != null && ("".equals(input)))||input.equals(null)){
+            return "Input can't be empty";
+        }else{
+            try{
+                inputInt=Integer.parseInt(input);
+                return "success";
+            }catch (Exception e) {
+                return "Input Must be Integer";
+            }
+        }
+    }
 }

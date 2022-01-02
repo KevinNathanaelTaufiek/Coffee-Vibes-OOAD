@@ -1,4 +1,4 @@
-/views/
-/models/
-/main/
 /controllers/
+/models/
+/views/
+/connector/
