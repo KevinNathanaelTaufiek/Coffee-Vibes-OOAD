@@ -57,7 +57,7 @@ public class Connector {
 	public PreparedStatement preparedStatement(String query){
 		PreparedStatement ps=null;
 		try{
-			ps=connection.prepareStatement(query);
+			ps=connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 		}catch (Exception e){
 			e.printStackTrace();
 		}

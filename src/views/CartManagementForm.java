@@ -1,7 +1,9 @@
 package views;
 
 import controllers.CartHandler;
+import controllers.TransactionHandler;
 import models.CartItem;
+import models.Employee;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;
@@ -20,8 +22,10 @@ public class CartManagementForm {
     
     private JPanel mainPanel,buttonPanel;
     private JButton checkOutButton,removeButton;
+    private Employee emp;
     
-    public CartManagementForm() {
+    public CartManagementForm(Employee emp) {
+    	this.emp = emp;
         setPanel();
         setFrame();
     }
@@ -50,6 +54,13 @@ public class CartManagementForm {
         checkOutButton=new JButton("Checkout");
         removeButton=new JButton("Remove form Cart");
         
+        checkOutButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				TransactionHandler.getInstance().viewTransactionManagementForm(emp);
+			}
+		});
         
         removeButton.addActionListener(new ActionListener() {
         	

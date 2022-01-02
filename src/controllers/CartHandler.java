@@ -31,8 +31,8 @@ public class CartHandler {
 		return controller;
 	}
 	
-	public void viewAddProductToCartForm() {
-		new CartManagementForm();
+	public void viewAddProductToCartForm(Employee emp) {
+		new CartManagementForm(emp);
 	}
 	
 	public List<CartItem> getCart() {
@@ -78,6 +78,11 @@ public class CartHandler {
 			Product product = getProduct(productID);
 			if(product == null) return null;
 			
+			if(quantityint > product.getStock()) {
+				errorMessage = "Quantity must less than stock";
+				return null;
+			}
+			
 			CartItem cartItem = updateCartProductQuantity(product.getProductID(),quantityint);
 			
 			if(cartItem == null) {
@@ -86,7 +91,7 @@ public class CartHandler {
 				boolean added = cartItems.add(cartItem);
 				
 				if (!added) {
-					errorMessage = "Product update failed";
+					errorMessage = "Add to cart failed";
 				}				
 			}
 			

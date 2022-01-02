@@ -98,15 +98,21 @@ public class Voucher {
         return 0;
     }
     public boolean deleteVoucher(Integer voucherID){
-        String query="Delete from "+this.table+" Where voucherID= ?";
-        try {
-            PreparedStatement ps= Connector.connect().preparedStatement(query);
-            ps.setInt(1,voucherID);
-            return ps.executeUpdate()==1;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
+    	String query = String.format("UPDATE %s SET status = 'InValid' WHERE voucherID = ?",this.table);
+
+		PreparedStatement ps = con.preparedStatement(query);
+		
+		try {
+			ps.setInt(1, voucherID);
+			
+			return ps.executeUpdate() == 1;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		return false;
     }
 
     public Voucher map(ResultSet rs){
