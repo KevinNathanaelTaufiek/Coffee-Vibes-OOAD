@@ -438,7 +438,11 @@ public class ProductManagementForm {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					CartHandler.getInstance().viewAddProductToCartForm();
+					if(!CartHandler.getInstance().getCart().isEmpty()) {
+						CartHandler.getInstance().viewAddProductToCartForm(emp);						
+					}else {
+						JOptionPane.showMessageDialog(frame, "Cart Is Empty!");
+					}
 					
 				}
 			});
