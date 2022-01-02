@@ -14,7 +14,8 @@ public class Connector {
 	private Connector() {
 		try {  
             Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/coffeevibes", "root", "");  
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/coffeevibes", "root", "");
+//			connection = DriverManager.getConnection("jdbc:mysql://localhost:3308/coffeevibes", "root", "");
             st = connection.createStatement(); 
         } catch(Exception e) {
         	e.printStackTrace();
