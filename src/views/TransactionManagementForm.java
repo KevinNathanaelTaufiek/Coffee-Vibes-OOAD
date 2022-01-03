@@ -131,8 +131,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 	    panel.setLayout(layout);       
 
 	    
-	    final JLabel label = new JLabel();
-	    int result = JOptionPane.showConfirmDialog(frame,"Are you sure you want "+dialog+" this item?", "Confirmation Dialog",
+	    int result = JOptionPane.showConfirmDialog(frame,"Are you sure you want "+dialog+" this product?", "Confirmation Dialog",
 	               JOptionPane.YES_NO_OPTION,
 	               JOptionPane.QUESTION_MESSAGE);
 	    if(result == JOptionPane.YES_OPTION){
@@ -141,12 +140,6 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 	    	return 0;
 	    }
 
-	    panel.add(label);
-	    frame.getContentPane().add(panel, BorderLayout.CENTER);    
-	    frame.setSize(560, 200); 
-	    frame.pack();
-	    frame.setLocationRelativeTo(null);  
-	    frame.setVisible(true);
 	    return 0;
 	}
 

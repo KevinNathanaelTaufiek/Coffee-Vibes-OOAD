@@ -358,7 +358,6 @@ public class HRView {
 	    panel.setLayout(layout);       
 
 	    
-	    final JLabel label = new JLabel();
 	    int result = JOptionPane.showConfirmDialog(frame,"Are you sure you want "+dialog+" this product?", "Confirmation Dialog",
 	               JOptionPane.YES_NO_OPTION,
 	               JOptionPane.QUESTION_MESSAGE);
@@ -368,11 +367,6 @@ public class HRView {
 	    	return 0;
 	    }
 
-	    panel.add(label);
-	    frame.getContentPane().add(panel, BorderLayout.CENTER);    
-	    frame.setSize(560, 200);      
-	    frame.setLocationRelativeTo(null);  
-	    frame.setVisible(true);
 	    return 0;
 	}
 
