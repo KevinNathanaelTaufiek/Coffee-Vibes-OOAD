@@ -68,6 +68,17 @@ public class TransactionHandler {
 				VoucherController voucherController = VoucherController.getInstance();
 				
 				Voucher voucherUsed = voucherController.getVoucher(voucherIDint);
+				
+				 if(voucherUsed == null) {
+					 errorMessage = "Voucher not found";
+					 return null;
+				 }
+				 
+				 if(voucherUsed.getStatus().equals("InValid")) {
+					 errorMessage = "Voucher was used";
+					 return null;
+				 }
+				
 				voucherController.deleteVoucher(voucherID);
 			}
 			

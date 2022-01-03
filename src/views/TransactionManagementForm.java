@@ -22,6 +22,7 @@ import controllers.VoucherController;
 import models.CartItem;
 import models.Employee;
 import models.Transaction;
+import models.Voucher;
 
 public class TransactionManagementForm extends JFrame implements ActionListener{
 
@@ -41,7 +42,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 		
 		titleLabel = new JLabel("Checkout Form");
 		voucherLabel = new JLabel("Voucher ID [Optional] : ");
-		totalPriceLabel = new JLabel("Total Price : " + updateTotalPrice("0"));
+		totalPriceLabel = new JLabel("Total Price : " + updateTotalPrice(""));
 		
 		voucherField = new JTextField();
 		
@@ -78,13 +79,19 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 			
 			int confrim = confirmationDialog("Check Out");
 			if(confrim == 1) {
-				TransactionHandler.getInstance().insertTransaction(voucherID, String.valueOf(emp.getEmployeeID()), totalPrice);
+				if(voucherID.isEmpty()) voucherID = "0";
+				Transaction transaction = TransactionHandler.getInstance().insertTransaction(voucherID, String.valueOf(emp.getEmployeeID()), totalPrice);
 				JOptionPane.showMessageDialog(this, TransactionHandler.getInstance().getErrorMessage());
-				
+				if (transaction != null) {
+					this.dispose();
+				}
+				else {
+					voucherField.setText("");
+				}
 			}else {
 				JOptionPane.showMessageDialog(this, "Check Out Canceled!");
+				this.dispose();
 			}
-			this.dispose();
 		}
 		else if (a.getSource() == useVoucherButton) {
 			totalPriceLabel.setText("Total Price : " + updateTotalPrice(voucherID));
@@ -100,18 +107,22 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 			totalPrice += (cartItem.getQuantity() * cartItem.getProduct().getPrice());
 		}
 		
-		if(!voucherID.equals("0")) {
+		if(!voucherID.equals("")) {
 			
 			try {
-				totalPrice = totalPrice - (int) (totalPrice * (VoucherController.getInstance().getVoucher(Integer.parseInt(voucherID)).getDiscount() / 100.0));
+				int voucherIDint = Integer.parseInt(voucherID);
+				Voucher voucher = VoucherController.getInstance().getVoucher(voucherIDint);
+				totalPrice = totalPrice - (int) (totalPrice * (voucher.getDiscount() / 100.0));
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Failed Use Voucher");
+				voucherField.setText("");
 			}
 		}
 		
 		this.totalPrice = totalPrice;
 		return totalPrice;
 	}
+	
 	
 	public int confirmationDialog(String dialog) {
 		JFrame frame = new JFrame("Confirmation Dialog");

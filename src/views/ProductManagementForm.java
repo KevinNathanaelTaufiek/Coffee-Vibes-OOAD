@@ -430,6 +430,7 @@ public class ProductManagementForm {
 					jlProductName.setText("Product Name : ");	
 					jlProductDesc.setText("Product Description : ");
 					jlProductPrice.setText("Product Price : ");
+					tfProductStock.setText("");
 				}
 			});
 			

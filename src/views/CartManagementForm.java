@@ -39,7 +39,6 @@ public class CartManagementForm {
                 return false;
             }
         };
-        table.setRowSelectionAllowed(false);
         loadData();
         scrollPane = new JScrollPane(table);
 
@@ -58,7 +57,16 @@ public class CartManagementForm {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				TransactionHandler.getInstance().viewTransactionManagementForm(emp);
+				
+
+				if(!CartHandler.getInstance().getCart().isEmpty()) {
+					TransactionHandler.getInstance().viewTransactionManagementForm(emp);					
+				}
+				else {
+					JOptionPane.showMessageDialog(frame, "cart is empty!");
+				}
+				
+				frame.dispose();
 			}
 		});
         

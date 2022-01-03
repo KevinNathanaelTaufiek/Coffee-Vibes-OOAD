@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 01, 2022 at 07:22 AM
+-- Generation Time: Jan 03, 2022 at 06:45 AM
 -- Server version: 10.4.21-MariaDB
 -- PHP Version: 8.0.10
 
@@ -42,10 +42,11 @@ CREATE TABLE `employee` (
 --
 
 INSERT INTO `employee` (`employeeID`, `positionID`, `name`, `status`, `salary`, `username`, `password`) VALUES
-(2, 1, 'barista', 'Active', 1000, 'barista', 'asdasd'),
-(3, 2, 'product admin', 'Active', 1212, 'productadmin', 'asdasd'),
-(4, 3, 'manager', 'Active', 9999, 'manager', 'asdasd'),
-(5, 4, 'hrd', 'Active', 777, 'hrd', 'asdasd');
+(1, 1, 'barista', 'Active', 1000, 'barista', 'asdasd'),
+(2, 2, 'product admin', 'Active', 1212, 'productadmin', 'asdasd'),
+(3, 3, 'manager', 'Active', 9999, 'manager', 'asdasd'),
+(4, 4, 'hrd', 'Active', 777, 'hrd', 'asdasd'),
+(5, 2, 'kepin', 'Active', 12000000, 'kevin_nt', 'qweqwe');
 
 -- --------------------------------------------------------
 
@@ -87,8 +88,11 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`productID`, `name`, `description`, `price`, `stock`) VALUES
-(6, 'qwe', 'ert', 1, 7),
-(7, 'kaveric', 'pajwdiopajwdpjaowijd adwawdjpaiopwdj', 4, 21);
+(1, 'Luwak White Latte', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 12000, 1000),
+(2, 'Americano', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 35000, 1000),
+(3, 'Cappuchino', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 25000, 1000),
+(4, 'Green Tea Latte', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 40000, 1000),
+(5, 'Black Coffee', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 10000, 1000);
 
 -- --------------------------------------------------------
 
@@ -99,7 +103,7 @@ INSERT INTO `product` (`productID`, `name`, `description`, `price`, `stock`) VAL
 CREATE TABLE `transaction` (
   `transactionID` int(11) NOT NULL,
   `purchaseDate` date NOT NULL,
-  `voucherID` int(11) NOT NULL,
+  `voucherID` int(11) DEFAULT NULL,
   `employeeID` int(11) NOT NULL,
   `totalPrice` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -133,7 +137,11 @@ CREATE TABLE `voucher` (
 --
 
 INSERT INTO `voucher` (`voucherID`, `discount`, `status`) VALUES
-(149327, 5, 'Valid');
+(370758, 99, 'Valid'),
+(456843, 50, 'Valid'),
+(708388, 20, 'Valid'),
+(761871, 15, 'InValid'),
+(879744, 25, 'Valid');
 
 --
 -- Indexes for dumped tables
@@ -188,7 +196,7 @@ ALTER TABLE `voucher`
 -- AUTO_INCREMENT for table `employee`
 --
 ALTER TABLE `employee`
-  MODIFY `employeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `employeeID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `position`
@@ -200,7 +208,7 @@ ALTER TABLE `position`
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `productID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `transaction`
