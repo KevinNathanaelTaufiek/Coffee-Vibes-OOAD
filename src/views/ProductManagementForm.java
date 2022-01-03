@@ -120,7 +120,7 @@ public class ProductManagementForm {
 		
 			
 		tfSearch = new JTextField();
-		btnSearch = new JButton("Search By ID");
+		btnSearch = new JButton("Search By ID / Refresh");
 		titlePanel.add(jlName);
 		titlePanel.add(navbarPanel);
 		titlePanel.add(tfSearch);

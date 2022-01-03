@@ -18,6 +18,7 @@ public class TransactionHandler {
 	private static TransactionHandler controller = null;
 	private String errorMessage;
 	private Transaction transaction;
+	private TransactionItem transactionItem;
 	
 	private TransactionHandler() {
 		transaction = new Transaction();
@@ -37,6 +38,31 @@ public class TransactionHandler {
 	
 	public void viewTransactionManagementForm(Employee emp) {
 		new TransactionManagementForm(emp);
+	}
+	
+	public List<Transaction> getAllTransactions() {
+		return transaction.getAllTransactions();
+	}
+	
+	public List<TransactionItem> getAllTransactionDetail(int id){
+		return transactionItem.getAllDetailItem(id);
+	}
+	
+	public Transaction getTransaction(String transactionID) {
+		if(transactionID.isEmpty()) {
+			errorMessage = "Transaction ID cannot be empty";
+			return null;
+		}
+		else {
+			int idint = -1;
+			try {
+				idint = Integer.parseInt(transactionID);				
+			} catch (Exception e) {
+				errorMessage = "Transaction Id must be numeric";
+				return null;
+			}
+			return transaction.getTransaction(idint);
+		}
 	}
 	
 	public Transaction insertTransaction(String voucherID, String employeeID, int totalPayment) {

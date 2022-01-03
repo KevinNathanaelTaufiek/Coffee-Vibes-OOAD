@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Vector;
 
 import connector.Connector;
 
@@ -16,38 +17,63 @@ public class Transaction {
 	private int employeeID;
 	private int totalPrice;
 	private List<TransactionItem> listTransactionItem;
-	
+	private TransactionItem transactionItem;
 	private Connector con = Connector.connect();
 	private String tableHeader = "transaction";
 	private String tableDetail = "transactionItem";
 	
-//	private Transaction map(ResultSet rs) {
-//		try {
-//			int id = rs.getInt("transactionID");
-//			Date purchaseDate = rs.getDate("purchaseDate");
-//			int voucherID = rs.getInt("voucherID");
-//			int employeeID = rs.getInt("employeeID");
-//			int totalPrice = rs.getInt("totalPrice");
-//			return new Transaction(id, purchaseDate, voucherID, employeeID, totalPrice, listTransactionItem);
-//		} catch (SQLException e) {
-//		}
-//		return null;
-//	}
-//	
-//	public Transaction getTransaction(int transactionID) {
-//		String query = "SELECT * FROM " + this.tableHeader 
-//				+ " WHERE transactionID = " + transactionID 
-//				+ " LIMIT 1";
-//		ResultSet rs = con.executeQuery(query);
-//		try {
-//			rs.next();
-//			return map(rs);
-//		} catch (SQLException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		return null;
-//	}
+	private Transaction map(ResultSet rs) {
+		try {
+			int id = rs.getInt("transactionID");
+			Date purchaseDate = rs.getDate("purchaseDate");
+			int voucherID = rs.getInt("voucherID");
+			int employeeID = rs.getInt("employeeID");
+			int totalPrice = rs.getInt("totalPrice");
+//			listTransactionItem = transactionItem.getAllDetailItem(id);
+			return new Transaction(id, purchaseDate, voucherID, employeeID, totalPrice);
+		} catch (SQLException e) {
+		}
+		return null;
+	}
+	
+	
+	
+	public Transaction getTransaction(int transactionID) {
+		String query = "SELECT * FROM " + this.tableHeader 
+				+ " WHERE transactionID = " + transactionID 
+				+ " LIMIT 1";
+		ResultSet rs = con.executeQuery(query);
+		try {
+			rs.next();
+			return map(rs);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+
+	
+	public List<Transaction> getAllTransactions() {
+		String query = String.format("SELECT * FROM " + this.tableHeader);
+		
+		ResultSet rs = con.executeQuery(query);
+		
+		try {
+			Vector<Transaction> transactions = new Vector<>();
+			while(rs.next()) {
+				Transaction transaction = map(rs);
+				transactions.add(transaction);
+			}
+			return transactions;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return null;
+	}
 	
 	public boolean insertTransaction(int voucherID, int employeeID, int totalPayment) {
 		String query = String.format("INSERT INTO %s (purchaseDate, voucherID, employeeID, totalPrice) VALUES (?,?,?,?)", this.tableHeader);
@@ -99,14 +125,12 @@ public class Transaction {
 	}
 	
 	
-	public Transaction(int transactionID, Date purchaseDate, int voucherID, int employeeID, int totalPrice,
-			List<TransactionItem> listTransactionItem) {
+	public Transaction(int transactionID, Date purchaseDate, int voucherID, int employeeID, int totalPrice) {
 		this.transactionID = transactionID;
 		this.purchaseDate = purchaseDate;
 		this.voucherID = voucherID;
 		this.employeeID = employeeID;
 		this.totalPrice = totalPrice;
-		this.listTransactionItem = listTransactionItem;
 	}
 
 

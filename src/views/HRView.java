@@ -146,13 +146,21 @@ public class HRView {
 		bottomPanel.add(gap2);
 		
 		JPanel btn_panel = new JPanel();
-		btn_panel.setLayout(new GridLayout(1,3,2,0));
-		btnInsert = new JButton("Insert Employee");
-		btnUpdate = new JButton("Update Employee");
-		btnDelete = new JButton("Delete Employee");
-		btn_panel.add(btnInsert);
-		btn_panel.add(btnUpdate);
-		btn_panel.add(btnDelete);
+		
+		if(this.emp.getPositionID()==4) { //HRD
+			btn_panel.setLayout(new GridLayout(1,3,2,0));
+			btnInsert = new JButton("Insert Employee");
+			btnUpdate = new JButton("Update Employee");
+			btnDelete = new JButton("Delete Employee");
+			btn_panel.add(btnInsert);
+			btn_panel.add(btnUpdate);
+			btn_panel.add(btnDelete);
+		}else if(this.emp.getPositionID() == 3) {//manager
+			btn_panel.setLayout(new GridLayout(1, 1));
+			btnDelete = new JButton("Fire Employee");
+			btn_panel.add(btnDelete);
+		}
+	
 		
 		bottomPanel.add(btn_panel);
 		content.add(bottomPanel, BorderLayout.SOUTH);
@@ -223,39 +231,11 @@ public class HRView {
 				}
 			}
 		});
-		
-		btnInsert.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				String name = tfEmpName.getText();
-				String position = jcPos.getSelectedItem().toString();
-				String status = jcStatus.getSelectedItem().toString();
-				String salary = tfEmpSalary.getText();
-				String username = tfEmpUsername.getText();
-				String password = String.valueOf(jpEmpPassword.getPassword());
+		if(this.emp.getPositionID()==4) {
+			btnInsert.addActionListener(new ActionListener() {
 				
-				boolean inserted = controller.insertEmployee(name, position, salary, status, username, password);
-				
-				if(inserted) {
-					clearTextField();
-					JOptionPane.showMessageDialog(frame, "Success Insert New Employee");
-					loadData();
-				}else {
-					JOptionPane.showMessageDialog(frame, controller.getErrorMessage());
-				}
-				
-			}
-		});
-		
-		btnUpdate.addActionListener(new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				int confrim = confirmationDialog("update");
-				
-				if(confrim == 1) {
-					String employeeID = tfEmpID.getText();
+				@Override
+				public void actionPerformed(ActionEvent e) {
 					String name = tfEmpName.getText();
 					String position = jcPos.getSelectedItem().toString();
 					String status = jcStatus.getSelectedItem().toString();
@@ -263,21 +243,50 @@ public class HRView {
 					String username = tfEmpUsername.getText();
 					String password = String.valueOf(jpEmpPassword.getPassword());
 					
-					boolean updated = controller.updateEmployee(employeeID, name, position, salary, status, username, password);
+					boolean inserted = controller.insertEmployee(name, position, salary, status, username, password);
 					
-					if(updated) {
+					if(inserted) {
 						clearTextField();
-						JOptionPane.showMessageDialog(frame, "Success Update Employee");
+						JOptionPane.showMessageDialog(frame, "Success Insert New Employee");
 						loadData();
 					}else {
 						JOptionPane.showMessageDialog(frame, controller.getErrorMessage());
 					}
-				}else {
-					JOptionPane.showMessageDialog(frame, "Update Employee Canceled!");
+					
 				}
+			});
 			
-			}
-		});
+			btnUpdate.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int confrim = confirmationDialog("update");
+					
+					if(confrim == 1) {
+						String employeeID = tfEmpID.getText();
+						String name = tfEmpName.getText();
+						String position = jcPos.getSelectedItem().toString();
+						String status = jcStatus.getSelectedItem().toString();
+						String salary = tfEmpSalary.getText();
+						String username = tfEmpUsername.getText();
+						String password = String.valueOf(jpEmpPassword.getPassword());
+						
+						boolean updated = controller.updateEmployee(employeeID, name, position, salary, status, username, password);
+						
+						if(updated) {
+							clearTextField();
+							JOptionPane.showMessageDialog(frame, "Success Update Employee");
+							loadData();
+						}else {
+							JOptionPane.showMessageDialog(frame, controller.getErrorMessage());
+						}
+					}else {
+						JOptionPane.showMessageDialog(frame, "Update Employee Canceled!");
+					}
+				
+				}
+			});
+		}
 		
 		btnDelete.addActionListener(new ActionListener() {
 			

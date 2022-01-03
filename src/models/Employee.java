@@ -13,6 +13,7 @@ import connector.Connector;
 import controllers.PositionHandler;
 import views.HRView;
 import views.ProductManagementForm;
+import views.TransactionManagementForm;
 
 public class Employee{
 
@@ -173,6 +174,8 @@ public class Employee{
 						new ProductManagementForm(employee);
 						
 					}else if(positionName.equals("Manager")) {
+						
+						new TransactionManagementForm(employee);
 						
 					}else if(positionName.equals("HRD")) {
 						
