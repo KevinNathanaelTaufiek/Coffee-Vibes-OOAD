@@ -64,9 +64,9 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 		add(buttonPanel, BorderLayout.SOUTH);
 		
 		setTitle("Staff");
-		setLocationRelativeTo(null);
-		setResizable(false);
 		setSize(500,300);
+		setResizable(false);
+		setLocationRelativeTo(null);
 		setVisible(true);
 	}
 	
@@ -143,7 +143,8 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 
 	    panel.add(label);
 	    frame.getContentPane().add(panel, BorderLayout.CENTER);    
-	    frame.setSize(560, 200);      
+	    frame.setSize(560, 200); 
+	    frame.pack();
 	    frame.setLocationRelativeTo(null);  
 	    frame.setVisible(true);
 	    return 0;

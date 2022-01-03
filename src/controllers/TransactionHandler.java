@@ -70,14 +70,14 @@ public class TransactionHandler {
 				Voucher voucherUsed = voucherController.getVoucher(voucherIDint);
 				
 				 if(voucherUsed == null) {
-					 errorMessage = "Voucher not found";
-					 return null;
-				 }
-				 
-				 if(voucherUsed.getStatus().equals("InValid")) {
+					 if(!voucherID.equals("0")) {
+						 errorMessage = "Voucher not found";
+						 return null;						 
+					 }
+				 }else if(voucherUsed.getStatus().equals("InValid")) {
 					 errorMessage = "Voucher was used";
 					 return null;
-				 }
+				 }					 
 				
 				voucherController.deleteVoucher(voucherID);
 			}
