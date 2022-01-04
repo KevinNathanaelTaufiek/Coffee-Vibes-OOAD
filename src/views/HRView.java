@@ -27,10 +27,8 @@ import javax.swing.table.DefaultTableModel;
 
 import connector.Connector;
 import controllers.EmployeeHandler;
-import controllers.ProductHandler;
 import models.Employee;
 import models.Position;
-import models.Product;
 
 public class HRView {
 	
@@ -38,7 +36,7 @@ public class HRView {
 	private JFrame frame = new JFrame("Human Resource");
 	private Employee emp;
 	private JLabel jlName, jlEmpID, jlEmpPos, jlEmpName, jlEmpStatus, jlEmpSalary, jlEmpUsername, jlEmpPassword;
-	private JTextField tfSearch, tfEmpID, tfEmpPos, tfEmpName, tfEmpStatus, tfEmpSalary, tfEmpUsername, tfEmpPassword;
+	private JTextField tfSearch, tfEmpID, tfEmpName, tfEmpSalary, tfEmpUsername;
 	private JPasswordField jpEmpPassword;
 	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout;
 	private JTable table;

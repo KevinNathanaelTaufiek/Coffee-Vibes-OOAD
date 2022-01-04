@@ -1,6 +1,6 @@
 package views;
 
-import controllers.VoucherController;
+import controllers.VoucherHandler;
 import models.Voucher;
 
 import javax.swing.*;
@@ -15,10 +15,8 @@ public class VoucherView {
     private JFrame frame = new JFrame("Coffee Vibes");
     private JTable voucherTable;
     private DefaultTableModel dtm;
-    private JPanel mainPanel,voucherPanel,buttonPanel;
+    private JPanel mainPanel,buttonPanel;
     private JScrollPane scrollPane;
-    private JTextField voucherIdField;
-    private JLabel voucherIdLabel;
     private JButton generateButton,deleteButton;
     
     public VoucherView() {
@@ -51,7 +49,7 @@ public class VoucherView {
         generateButton.addActionListener(e -> {
             String discount="";
             discount = JOptionPane.showInputDialog("Input Discount");
-            VoucherController voucherController= VoucherController.getInstance();
+            VoucherHandler voucherController= VoucherHandler.getInstance();
             String msg=voucherController.cekInputGenerate(discount);
             if(msg.equals("success")){
                 Voucher voucher=voucherController.insertVoucher(discount);
@@ -68,7 +66,7 @@ public class VoucherView {
         deleteButton.addActionListener(e -> {
             String voucherId="";
             voucherId = JOptionPane.showInputDialog("Input Voucher Id");
-            VoucherController voucherController=VoucherController.getInstance();
+            VoucherHandler voucherController=VoucherHandler.getInstance();
             String id=voucherId;
             String msg=voucherController.cekInputDelete(voucherId);
             if(msg.equals("success")){
@@ -90,7 +88,7 @@ public class VoucherView {
     private void getData(){
         String[] headers={"Voucher Id","Discount","Status"};
         dtm=new DefaultTableModel(headers,0);
-        Vector<Voucher> vouchers= VoucherController.getInstance().getAllVouchers();
+        Vector<Voucher> vouchers= VoucherHandler.getInstance().getAllVouchers();
         for(Voucher voucher: vouchers){
             Vector<Object> row =new Vector<>();
             row.add(voucher.getVoucherID());

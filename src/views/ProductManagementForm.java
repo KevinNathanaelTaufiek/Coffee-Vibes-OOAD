@@ -25,7 +25,7 @@ import javax.swing.table.DefaultTableModel;
 import connector.Connector;
 import controllers.CartHandler;
 import controllers.ProductHandler;
-import controllers.VoucherController;
+import controllers.VoucherHandler;
 import models.CartItem;
 import models.Employee;
 import models.Product;
@@ -37,7 +37,7 @@ public class ProductManagementForm {
 	private JFrame frame = new JFrame("Product Management");
 	private Employee emp;
 	private JLabel jlName, jlProductID, jlProductName, jlProductPrice, jlProductStock, jlProductDesc, jlProductQuantity;
-	private JTextField tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc, tfProductQuantity;
+	private JTextField tfSearch, tfProductID, tfProductName, tfProductPrice, tfProductStock, tfProductDesc;
 	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout ,btnVoucher, btnAddToCart, btnCart;
 	
 	private JTable table;
@@ -317,7 +317,7 @@ public class ProductManagementForm {
 				
 				@Override
 				public void actionPerformed(ActionEvent e) {
-					VoucherController.VoucherView();
+					VoucherHandler.VoucherView();
 				}
 			});
 	

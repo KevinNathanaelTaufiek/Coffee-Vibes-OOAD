@@ -26,7 +26,7 @@ import javax.swing.table.DefaultTableModel;
 import controllers.CartHandler;
 import controllers.ProductHandler;
 import controllers.TransactionHandler;
-import controllers.VoucherController;
+import controllers.VoucherHandler;
 import models.CartItem;
 import models.Employee;
 import models.Product;
@@ -38,9 +38,9 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 
 	private JFrame frame = new JFrame("Transaction Management");
 	private JPanel contentPanel, buttonPanel, mainPanel;
-	private JButton checkoutButton, useVoucherButton, btnLogout, btnEmployee, btnSearch, btnInsert;
-	private JLabel titleLabel, voucherLabel, totalPriceLabel, jlName, jlTransactionID, jlProductID, jlQuantity;
-	private JTextField voucherField, tfSearch, tfTransactionID, tfProductID, tfQuantity;
+	private JButton checkoutButton, useVoucherButton, btnLogout, btnEmployee, btnSearch;
+	private JLabel titleLabel, voucherLabel, totalPriceLabel, jlName;
+	private JTextField voucherField, tfSearch;
 	private int totalPrice = 0;
 	private Employee emp;
 	private JTable table, tableDetail;
@@ -78,7 +78,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 			add(contentPanel, BorderLayout.CENTER);
 			add(buttonPanel, BorderLayout.SOUTH);
 			
-			setTitle("Staff");
+			setTitle("Checkout Form");
 			setSize(500,300);
 			setResizable(false);
 			setLocationRelativeTo(null);
@@ -90,6 +90,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 		}
 		
 	}
+	
 	
 	private void init() {
 		frame.setSize(900, 800);
@@ -328,7 +329,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 			
 			try {
 				int voucherIDint = Integer.parseInt(voucherID);
-				Voucher voucher = VoucherController.getInstance().getVoucher(voucherIDint);
+				Voucher voucher = VoucherHandler.getInstance().getVoucher(voucherIDint);
 				totalPrice = totalPrice - (int) (totalPrice * (voucher.getDiscount() / 100.0));
 			} catch (Exception e) {
 				JOptionPane.showMessageDialog(this, "Failed Use Voucher");

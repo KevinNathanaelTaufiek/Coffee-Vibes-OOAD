@@ -1,17 +1,11 @@
 package main;
 
-import java.util.List;
-
-import controllers.EmployeeHandler;
-import controllers.LoginController;
-import models.Employee;
-import views.HRView;
+import controllers.LoginHandler;
 
 public class Main {
 
 	public Main() {
-		LoginController.LoginView();
-//		new TransactionManagementForm();
+		LoginHandler.LoginView();
 	}
 	
 	public static void main(String[] args) {

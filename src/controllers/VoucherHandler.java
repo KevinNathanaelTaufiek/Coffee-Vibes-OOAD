@@ -5,12 +5,12 @@ import views.VoucherView;
 
 import java.util.Vector;
 
-public class VoucherController {
+public class VoucherHandler {
     private Voucher voucher;
-    public static VoucherController voucherController=null;
+    public static VoucherHandler voucherController=null;
     
     
-    public VoucherController() {
+    public VoucherHandler() {
         voucher = new Voucher();
     }
     
@@ -18,9 +18,9 @@ public class VoucherController {
 		new VoucherView(); 
 	}
     
-    public static VoucherController getInstance() {
+    public static VoucherHandler getInstance() {
         if(voucherController == null) {
-            voucherController = new VoucherController();
+            voucherController = new VoucherHandler();
         }
         return voucherController;
     }
