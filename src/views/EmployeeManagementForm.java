@@ -30,10 +30,10 @@ import controllers.EmployeeHandler;
 import models.Employee;
 import models.Position;
 
-public class HRView {
+public class EmployeeManagementForm {
 	
 	private Connector con = Connector.connect();
-	private JFrame frame = new JFrame("Human Resource");
+	private JFrame frame = new JFrame("Employee Management Form");
 	private Employee emp;
 	private JLabel jlName, jlEmpID, jlEmpPos, jlEmpName, jlEmpStatus, jlEmpSalary, jlEmpUsername, jlEmpPassword;
 	private JTextField tfSearch, tfEmpID, tfEmpName, tfEmpSalary, tfEmpUsername;
@@ -43,7 +43,7 @@ public class HRView {
 	private DefaultTableModel modelTable;
 	private JComboBox<String> jcPos, jcStatus;
 	
-	public HRView(Employee emp) {
+	public EmployeeManagementForm(Employee emp) {
 		this.emp = emp;
 		init();
 		setPanel();

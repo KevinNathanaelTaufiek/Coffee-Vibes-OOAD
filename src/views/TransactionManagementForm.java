@@ -196,7 +196,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 			public void actionPerformed(ActionEvent e) {
 				if(e.getSource() == btnEmployee) {
 					frame.setVisible(false);
-					new HRView(emp);
+					new EmployeeManagementForm(emp);
 				}
 			}
 		});

@@ -8,7 +8,7 @@ import java.util.Vector;
 
 import connector.Connector;
 import controllers.PositionHandler;
-import views.HRView;
+import views.EmployeeManagementForm;
 import views.ProductManagementForm;
 import views.TransactionManagementForm;
 
@@ -176,7 +176,7 @@ public class Employee{
 						
 					}else if(positionName.equals("HRD")) {
 						
-						new HRView(employee);
+						new EmployeeManagementForm(employee);
 						
 					}else {
 						error= "Wrong Email or Password!";				
