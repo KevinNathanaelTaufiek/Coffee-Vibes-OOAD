@@ -76,9 +76,9 @@ public class EmployeeManagementForm {
 		if(this.emp.getPositionID() == 3) { //manager
 			btnTransaction = new JButton("List Transaction");
 			navbarPanel.add(btnTransaction);
-			navbarPanel.add(btnLogout);
 		}
 		
+		navbarPanel.add(btnLogout);
 		navPanel.add(jlName);
 		navPanel.add(navbarPanel);
 		navPanel.add(tfSearch);
