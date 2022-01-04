@@ -286,10 +286,10 @@ public class ProductManagementForm {
 				}else {
 					//Search
 					String header[] = {
-							"productID", "name",
-							"description",
-							"price",
-							"stock"
+							"Product ID", "Name",
+							"Description",
+							"Price",
+							"Stock"
 					};
 					
 					modelTable = new DefaultTableModel(header, 0);

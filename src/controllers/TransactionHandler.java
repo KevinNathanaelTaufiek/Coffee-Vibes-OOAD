@@ -22,6 +22,7 @@ public class TransactionHandler {
 	
 	private TransactionHandler() {
 		transaction = new Transaction();
+		transactionItem = new TransactionItem();
 		errorMessage = "";
 	}
 	

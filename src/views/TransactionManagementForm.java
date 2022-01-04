@@ -37,14 +37,15 @@ import models.Voucher;
 public class TransactionManagementForm extends JFrame implements ActionListener{
 
 	private JFrame frame = new JFrame("Transaction Management");
-	private JPanel contentPanel, buttonPanel;
+	private JPanel contentPanel, buttonPanel, mainPanel;
 	private JButton checkoutButton, useVoucherButton, btnLogout, btnEmployee, btnSearch, btnInsert;
 	private JLabel titleLabel, voucherLabel, totalPriceLabel, jlName, jlTransactionID, jlProductID, jlQuantity;
 	private JTextField voucherField, tfSearch, tfTransactionID, tfProductID, tfQuantity;
 	private int totalPrice = 0;
 	private Employee emp;
-	private JTable table;
-	private DefaultTableModel modelTable;
+	private JTable table, tableDetail;
+	private DefaultTableModel modelTable, modelTableDetail;
+	private JScrollPane scrollPaneDetail;
 	
 	public TransactionManagementForm(Employee emp) {
 		this.emp = emp;
@@ -127,7 +128,6 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 		
 		// Scroll Panel ( Tabel )
 		JScrollPane jspanel = new JScrollPane();
-//		table = new JTable();
 		table=new JTable(modelTable){
             public boolean editCellAt(int row, int column, java.util.EventObject e) {
                 return false;
@@ -135,36 +135,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 		};
 		
 		jspanel.setViewportView(table);
-		content.add(jspanel, BorderLayout.CENTER);
-		
-		// Bottom Panel
-		JPanel bottomPanel = new JPanel();
-		bottomPanel.setLayout(new GridLayout(9, 1));
-		
-		JPanel pan1 = new JPanel();
-		bottomPanel.add(pan1);
-		
-		//Information
-		JLabel jlInfo = new JLabel("Transaction Detail",JLabel.CENTER);
-		bottomPanel.add(jlInfo);
-		
-		// Transaction ID
-		jlTransactionID = new JLabel("Transaction ID");
-		bottomPanel.add(jlTransactionID);
-					
-		//ProductID
-		jlProductID= new JLabel("Product ID");
-		bottomPanel.add(jlProductID);
-					
-		// Quantity
-		jlQuantity= new JLabel("Quantity");
-		bottomPanel.add(jlQuantity);
-		
-		JPanel pan = new JPanel();
-		bottomPanel.add(pan);
-		
-
-		content.add(bottomPanel, BorderLayout.SOUTH);
+		content.add(jspanel, BorderLayout.CENTER);	
 		
 		frame.setContentPane(content);
 		
@@ -177,18 +148,7 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 			private void getData() {
 				int row = table.getSelectedRow();
 				int transactionID = (int) table.getValueAt(row, 0);
-				
-				List<TransactionItem> listTI = TransactionHandler.getInstance().getAllTransactionDetail(transactionID);
-				
-				jlTransactionID.setText("Transaction ID : "+transactionID);	
-				
-				for (TransactionItem transactionItem : listTI) {
-					int productID = transactionItem.getProductID();
-					int quantity = transactionItem.getQuantity();
-					jlProductID.setText("Product ID : "+ productID);
-					jlQuantity.setText("Product quantity : "+quantity);
-				}	
-  
+				loadDetailTransaction(transactionID);
 			}
 		});
 		
@@ -202,11 +162,11 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 				}else {
 					//Search
 					String header[] = {
-							"transactionID", 
-							"purchaseDate",
-							"voucherID",
-							"employeeID",
-							"totalPrice"
+							"Transaction ID", 
+							"Purchase Date",
+							"Voucher ID",
+							"Employee ID",
+							"Total Price"
 					};
 					
 					modelTable = new DefaultTableModel(header, 0);
@@ -255,11 +215,11 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 	private void loadData() {
 		//Set Table Model
 		String header[] = {
-				"transactionID", 
-				"purchaseDate",
-				"voucherID",
-				"employeeID",
-				"totalPrice"
+				"Transaction ID", 
+				"Purchase Date",
+				"Voucher ID",
+				"Employee ID",
+				"Total Price"
 		};
 		DefaultTableModel modelTable;
 		modelTable = new DefaultTableModel(header, 0);
@@ -279,6 +239,52 @@ public class TransactionManagementForm extends JFrame implements ActionListener{
 		table.setModel(modelTable);
 	}
 	
+	
+	public void loadDetailTransaction(int id) {
+		JFrame frame1 = new JFrame("Transaction Detail");
+		  mainPanel=new JPanel(new BorderLayout());
+	      mainPanel.setBorder(new LineBorder(Color.WHITE,4));
+
+	     tableDetail=new JTable(modelTableDetail){
+	    	 public boolean editCellAt(int row, int column, java.util.EventObject e) {
+	    		 return false;
+	         }
+	     };
+	     tableDetail.setRowSelectionAllowed(false);
+	     getDataDetail(id);
+	     scrollPaneDetail = new JScrollPane(tableDetail);
+
+	     mainPanel.add(scrollPaneDetail,BorderLayout.CENTER);
+	     
+	     frame1.add(mainPanel,BorderLayout.CENTER);
+		
+	     frame1.setSize(1000, 600);
+	     frame1.setResizable(true);
+	     frame1.setLocationRelativeTo(null);
+	     frame1.setVisible(true);
+	     frame1.setTitle("Transaction Detail");
+	}
+	
+	
+	public void getDataDetail(int id) {
+		  String[] headers={"Transaction ID","Product ID","Product Name","Product Description", "Product Price", "Quantity", "Sub Total"};
+	      modelTableDetail=new DefaultTableModel(headers,0);
+	      Vector<TransactionItem> transactionItems = (Vector<TransactionItem>) TransactionHandler.getInstance().getAllTransactionDetail(id);
+	      
+	        for(TransactionItem transactionItem: transactionItems){
+	            Vector<Object> row =new Vector<>();
+	            row.add(transactionItem.getTransactionID());
+	            row.add(transactionItem.getProductID());
+	            Product product = ProductHandler.getInstance().getProduct(String.valueOf(transactionItem.getProductID()));
+	            row.add(product.getName());
+	            row.add(product.getDescription());
+	            row.add(product.getPrice());
+	            row.add(transactionItem.getQuantity());
+	            row.add(product.getPrice()* transactionItem.getQuantity());
+	            modelTableDetail.addRow(row);
+	        }
+	        tableDetail.setModel(modelTableDetail);
+	}
 	
 	
 	@Override

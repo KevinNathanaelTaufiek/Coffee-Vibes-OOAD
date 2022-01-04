@@ -206,8 +206,8 @@ public class HRView {
 					loadData();
 				}else {
 					String header[] = {
-							"employeeID", "positionID", "name",
-							"status", "salary" , "username", "password"
+							"Employee ID", "Position ID", "Name",
+							"Status", "Salary" , "Username", "Password"
 					};
 					
 					modelTable = new DefaultTableModel(header, 0);

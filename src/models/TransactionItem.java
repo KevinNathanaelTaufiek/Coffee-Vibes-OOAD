@@ -51,7 +51,6 @@ public class TransactionItem {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 		return null;
 	}
 	
