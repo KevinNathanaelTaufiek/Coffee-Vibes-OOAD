@@ -17,7 +17,6 @@ public class Transaction {
 	private int employeeID;
 	private int totalPrice;
 	private List<TransactionItem> listTransactionItem;
-	private TransactionItem transactionItem;
 	private Connector con = Connector.connect();
 	private String tableHeader = "transaction";
 	private String tableDetail = "transactionItem";
@@ -29,7 +28,6 @@ public class Transaction {
 			int voucherID = rs.getInt("voucherID");
 			int employeeID = rs.getInt("employeeID");
 			int totalPrice = rs.getInt("totalPrice");
-//			listTransactionItem = transactionItem.getAllDetailItem(id);
 			return new Transaction(id, purchaseDate, voucherID, employeeID, totalPrice);
 		} catch (SQLException e) {
 		}
@@ -68,7 +66,6 @@ public class Transaction {
 			}
 			return transactions;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

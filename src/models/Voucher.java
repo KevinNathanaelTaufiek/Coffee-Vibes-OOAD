@@ -2,7 +2,6 @@ package models;
 
 
 import java.sql.*;
-import java.util.Random;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -107,7 +106,6 @@ public class Voucher {
 			
 			return ps.executeUpdate() == 1;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

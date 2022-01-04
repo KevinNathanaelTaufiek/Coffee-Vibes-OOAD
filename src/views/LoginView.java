@@ -19,7 +19,7 @@ import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-import controllers.LoginController;
+import controllers.LoginHandler;
 
 
 public class LoginView{
@@ -37,7 +37,7 @@ public class LoginView{
 	}
 	
 	private void setFrame() {
-		frame.setSize(400, 600);
+		frame.setSize(400, 300);
 		frame.setResizable(true);
 		frame.setLocationRelativeTo(null);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -52,8 +52,8 @@ public class LoginView{
 		mainPanel.setBorder(new LineBorder(Color.WHITE, 4));
 		// Set Top Panel
 		titlePanel = new JPanel();
-		jlTitle = new JLabel("Login");
-		jlTitle.setFont(new Font("Times New Roman", Font.PLAIN, 24));
+		jlTitle = new JLabel("Login Form");
+		jlTitle.setFont(new Font("", Font.PLAIN, 24));
 		
 		titlePanel.add(jlTitle);
 		
@@ -63,14 +63,12 @@ public class LoginView{
 		formPanel.setLayout(new GridBagLayout());
 		
 		jlUsername = new JLabel("Username: ");
-		jlUsername.setBounds(100, 8, 70, 20);
 		tfUsername = new JTextField();
 		tfUsername.setBounds(100, 27, 193, 28);
 		tfUsername.setPreferredSize(new Dimension(200,50));
 	
 		
 		jlPassword= new JLabel("Password: ");
-		jlPassword.setBounds(100, 8, 70, 20);
 		tfPassword = new JPasswordField();
 		tfPassword.setBounds(100, 27, 193, 28);
 		tfPassword.setPreferredSize(new Dimension(200,50));
@@ -108,7 +106,7 @@ public class LoginView{
 		
 		frame.add(mainPanel);
 		
-		LoginController controller = LoginController.getInstance();
+		LoginHandler controller = LoginHandler.getInstance();
 		btnLogin.addActionListener(new ActionListener() {
 			
 			@Override
@@ -118,7 +116,7 @@ public class LoginView{
 					frame.setVisible(false);
 				}else {
 					if(!controller.getErrorMessage().equals("")) {
-						JOptionPane.showMessageDialog(frame, LoginController.getInstance().getErrorMessage(), "Login Message", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(frame, LoginHandler.getInstance().getErrorMessage(), "Login Message", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}

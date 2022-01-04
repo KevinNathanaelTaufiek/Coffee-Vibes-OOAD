@@ -3,13 +3,13 @@ package controllers;
 import models.Employee;
 import views.LoginView;
 
-public class LoginController {
+public class LoginHandler {
 
 	private Employee employee;
-	public static LoginController controller = null;
+	public static LoginHandler controller = null;
 	private String errorMessage;
 	
-	private LoginController() {
+	private LoginHandler() {
 		employee = new Employee();
 		errorMessage = "";
 	}
@@ -23,9 +23,9 @@ public class LoginController {
 		new LoginView();
 	}
 	
-	public static LoginController getInstance() {
+	public static LoginHandler getInstance() {
 		if(controller == null) {
-			controller = new LoginController();
+			controller = new LoginHandler();
 		}
 		return controller;
 	}

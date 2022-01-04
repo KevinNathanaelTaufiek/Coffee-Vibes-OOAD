@@ -92,7 +92,7 @@ public class TransactionHandler {
 					return null;
 				}
 				
-				VoucherController voucherController = VoucherController.getInstance();
+				VoucherHandler voucherController = VoucherHandler.getInstance();
 				
 				Voucher voucherUsed = voucherController.getVoucher(voucherIDint);
 				
