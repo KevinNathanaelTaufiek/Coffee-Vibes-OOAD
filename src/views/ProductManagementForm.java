@@ -52,10 +52,10 @@ public class ProductManagementForm {
 	private void loadData() {
 		//Set Table Model
 		String header[] = {
-				"productID", "name",
-				"description",
-				"price",
-				"stock"
+				"Product Id", "Name",
+				"Description",
+				"Price",
+				"Stock"
 		};
 		DefaultTableModel modelTable;
 		modelTable = new DefaultTableModel(header, 0);

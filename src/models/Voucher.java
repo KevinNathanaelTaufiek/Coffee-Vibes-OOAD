@@ -99,20 +99,30 @@ public class Voucher {
     }
     public boolean deleteVoucher(Integer voucherID){
     	String query = String.format("UPDATE %s SET status = 'InValid' WHERE voucherID = ?",this.table);
-
 		PreparedStatement ps = con.preparedStatement(query);
-		
 		try {
 			ps.setInt(1, voucherID);
-			
 			return ps.executeUpdate() == 1;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
 		return false;
+    }
+    public String deleteVoucherById(Integer voucherID){
+        String query = String.format("Delete from %s WHERE voucherID = ? and status='Valid'",this.table);
+        PreparedStatement ps = con.preparedStatement(query);
+        try {
+            ps.setInt(1, voucherID);
+            if(ps.executeUpdate() == 1){
+                return "Success";
+            }else{
+                return "Voucher not Found or vouchers in use";
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Error";
     }
 
     public Voucher map(ResultSet rs){

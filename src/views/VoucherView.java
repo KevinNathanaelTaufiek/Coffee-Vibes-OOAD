@@ -72,12 +72,12 @@ public class VoucherView {
             String id=voucherId;
             String msg=voucherController.cekInputDelete(voucherId);
             if(msg.equals("success")){
-                boolean status=voucherController.deleteVoucher(id);
-                if(status){
+                String status=voucherController.deleteVoucherById(id);
+                if(status.equals("Success")){
                     JOptionPane.showMessageDialog(null, "Voucher delete with Voucher ID : " +id,"Success",JOptionPane.INFORMATION_MESSAGE);
                     getData();
                 }else{
-                    JOptionPane.showMessageDialog(null, "Id : "+id+" Not Found or Error Delete","Error",JOptionPane.YES_OPTION);
+                    JOptionPane.showMessageDialog(null, "Id : "+id+", "+status,"Error",JOptionPane.YES_OPTION);
                 }
             }else {
                 JOptionPane.showMessageDialog(null, msg ,"Error",JOptionPane.YES_OPTION);

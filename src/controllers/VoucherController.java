@@ -49,13 +49,18 @@ public class VoucherController {
         }
         return voucher.deleteVoucher(Integer.parseInt(voucherID));
     }
+    public String deleteVoucherById(String voucherID){
+        if(voucherID.equalsIgnoreCase("")||voucherID==null){
+            return "Voucher Can't Null";
+        }
+        return voucher.deleteVoucherById(Integer.parseInt(voucherID));
+    }
     public Voucher getVoucher(Integer voucherID){
         return voucher.getVoucher(voucherID);
     }
 
     public String cekInputGenerate(String input){
         int inputInt=-1;
-
         if((input != null && ("".equals(input)))||input==null){
             return "Input can't be empty";
         }else{
@@ -73,7 +78,7 @@ public class VoucherController {
     }
     public String cekInputDelete(String input){
         int inputInt=-1;
-        if((input != null && ("".equals(input)))||input.equals(null)){
+        if((input != null && ("".equals(input)))||input==null){
             return "Input can't be empty";
         }else{
             try{
