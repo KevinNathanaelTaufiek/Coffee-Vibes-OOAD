@@ -152,7 +152,7 @@ public class EmployeeHandler {
 			errorMessage = "Username cannot be empty";
 			return false;
 		}else if(password.isEmpty()) {
-			errorMessage = "Name cannot be empty";
+			errorMessage = "Password cannot be empty";
 			return false;
 		}else {
 			int empIDInt = -1, positionID = getPositionByName(position), salaryInt = -1;

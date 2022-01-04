@@ -154,6 +154,15 @@ public class HRView {
 			btn_panel.add(btnUpdate);
 			btn_panel.add(btnDelete);
 		}else if(this.emp.getPositionID() == 3) {//manager
+			tfEmpID.setEditable(false);
+			tfEmpName.setEditable(false);
+			tfEmpSalary.setEditable(false);
+			tfEmpUsername.setEditable(false);
+			jlEmpPassword.setVisible(false);
+			jpEmpPassword.setVisible(false);
+			jcPos.setEnabled(false);
+			jcStatus.setEnabled(false);
+			
 			btn_panel.setLayout(new GridLayout(1, 1));
 			btnDelete = new JButton("Fire Employee");
 			btn_panel.add(btnDelete);
