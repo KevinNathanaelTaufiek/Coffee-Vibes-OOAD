@@ -38,7 +38,7 @@ public class EmployeeManagementForm {
 	private JLabel jlName, jlEmpID, jlEmpPos, jlEmpName, jlEmpStatus, jlEmpSalary, jlEmpUsername, jlEmpPassword;
 	private JTextField tfSearch, tfEmpID, tfEmpName, tfEmpSalary, tfEmpUsername;
 	private JPasswordField jpEmpPassword;
-	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout;
+	private JButton btnSearch, btnInsert, btnUpdate, btnDelete, btnLogout, btnTransaction;
 	private JTable table;
 	private DefaultTableModel modelTable;
 	private JComboBox<String> jcPos, jcStatus;
@@ -70,8 +70,17 @@ public class EmployeeManagementForm {
 		tfSearch = new JTextField();
 		btnSearch = new JButton("Search By Name");
 		
+		JPanel navbarPanel = new JPanel();
+		navbarPanel.setLayout(new GridLayout(1,2));
+		
+		if(this.emp.getPositionID() == 3) { //manager
+			btnTransaction = new JButton("List Transaction");
+			navbarPanel.add(btnTransaction);
+			navbarPanel.add(btnLogout);
+		}
+		
 		navPanel.add(jlName);
-		navPanel.add(btnLogout);
+		navPanel.add(navbarPanel);
 		navPanel.add(tfSearch);
 		navPanel.add(btnSearch);
 		
@@ -238,6 +247,7 @@ public class EmployeeManagementForm {
 				}
 			}
 		});
+		
 		if(this.emp.getPositionID()==4) {
 			btnInsert.addActionListener(new ActionListener() {
 				
@@ -291,6 +301,17 @@ public class EmployeeManagementForm {
 						JOptionPane.showMessageDialog(frame, "Update Employee Canceled!");
 					}
 				
+				}
+			});
+		}else {
+			btnTransaction.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if(e.getSource() == btnTransaction) {
+						frame.setVisible(false);
+						new TransactionManagementForm(emp);
+					}
 				}
 			});
 		}
